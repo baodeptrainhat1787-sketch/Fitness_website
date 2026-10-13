@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>FitPlan — Kế hoạch tập luyện cá nhân</title>
+<style>
+:root{--bg:#080d18;--panel:#121d2e;--panel2:#17243a;--text:#eef4ff;--muted:#aab8ce;--accent:#9dffb5;--accent2:#b7c8ff;--line:#2a3a53;--warn:#ffdf8b;--ink:#172033}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -10%,#1b3150 0,transparent 42%),var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:980px;margin:auto;padding:24px 16px 70px}.hero{padding:30px 0 24px}.hero .eyebrow{color:var(--accent);letter-spacing:.2em}.hero h1{letter-spacing:-.04em}.hero .pill{background:#17243a;color:var(--accent);border:1px solid #35506c}.eyebrow{color:#111;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.75rem}.hero h1{font-size:clamp(2rem,7vw,3.3rem);line-height:1.05;margin:10px 0}.hero p{color:var(--muted);max-width:650px;margin:12px 0}
+.pill{display:inline-block;background:#111;color:#fff;padding:5px 10px;border-radius:99px;font-size:.8rem;font-weight:700}
+.card{background:linear-gradient(145deg,#fff,#f7f9fc);color:#172033;border:1px solid #d7deea;border-radius:20px;padding:22px;margin:16px 0;box-shadow:0 14px 34px #0003}.card h2{letter-spacing:-.02em}
+h2{font-size:1.25rem;margin:0 0 14px}h3{font-size:1.03rem;margin:0 0 7px}p{margin-top:6px}.muted{color:#5c687a}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field label,.qtitle{font-weight:700}.field input,.field select{width:100%;background:#fff;color:#111;border:1px solid #bcbcbc;border-radius:11px;padding:12px;font:inherit;min-width:0}.hint{font-size:.82rem;color:#657187}
+.question{border-top:1px solid var(--line);padding:16px 0}.question:first-of-type{border-top:0}.qtitle{display:block;margin-bottom:10px}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.option{display:flex;align-items:flex-start;gap:9px;padding:11px;border:1px solid #d1d8e3;border-radius:12px;background:#fafafa;color:#172033;cursor:pointer}.option:has(input:checked){border-color:#111;background:#e8e8e8}.option input{accent-color:#111;margin-top:5px;flex-shrink:0}.option span{font-size:.94rem}
+button{border:0;border-radius:13px;padding:13px 17px;font:inherit;font-weight:800;cursor:pointer;transition:transform .15s,box-shadow .15s}button:hover{transform:translateY(-1px);box-shadow:0 6px 18px #17203320}.primary{background:linear-gradient(120deg,#111827,#263750);color:#fff;width:100%;margin-top:12px}.secondary{background:#263750;color:var(--text)}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent2);outline-offset:2px}
+.hidden{display:none!important}.resultHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}.resultHead h2{font-size:1.6rem}.tag{display:inline-block;border:1px solid #999;color:#111;padding:4px 9px;border-radius:99px;font-size:.8rem;margin:3px 5px 3px 0}
+.day{background:#f8fafc;color:#172033;border:1px solid #d7deea;border-radius:14px;padding:14px;margin:10px 0}.day h3{color:#166534}.exercise{padding:9px 0;border-top:1px dashed #33445d}.exercise:first-of-type{border-top:0}.exercise strong{display:block}.exercise small{color:#5c687a}.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.note{border-left:3px solid #c38b12;padding:10px 12px;background:#fff8df;border-radius:0 10px 10px 0;color:#654d12}.checklist label{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.checklist input{accent-color:#111;margin-top:5px}.checklist label{color:#172033}
+footer{color:var(--muted);font-size:.83rem;padding-top:14px}a{color:var(--accent2)}@media(max-width:560px){.grid,.options,.two{grid-template-columns:1fr}.card{padding:16px}main{padding-left:12px;padding-right:12px}}
+
+.topnav{position:sticky;top:0;z-index:5;display:flex;gap:8px;overflow-x:auto;padding:11px 10px;background:#0b1220eF;backdrop-filter:blur(16px);border:1px solid #263750;border-radius:18px;margin:0 0 18px;box-shadow:0 8px 25px #0003}.topnav a.active{background:#8bffb0;color:#101827;border-color:#8bffb0}.page-content{display:none!important}.page-content.page-active{display:block!important}.topnav a{white-space:nowrap;text-decoration:none;color:#eef4ff;border:1px solid #34435a;border-radius:999px;padding:10px 15px;font-size:.92rem;font-weight:750;flex:1;text-align:center}.quotegrid,.libraryGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.quotegrid blockquote{margin:0;padding:14px;background:#f2f5f9;color:#1b2739;border-radius:12px;border-left:3px solid #64748b}.quotegrid small{display:block;color:#5c687a;margin-top:6px}.libraryFilters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}.filterBtn{padding:9px 12px;background:#e8edf4;color:#172033;border:1px solid #cbd5e1}.filterBtn.active{background:#172033;color:#fff}.libraryItem{display:flex;flex-direction:column;gap:8px;text-align:left;background:linear-gradient(145deg,#fff,#f5f8fc);border:1px solid #d7deea;border-radius:16px;padding:16px;color:#172033;box-shadow:0 4px 14px #17203308}.libraryItem small{color:#5c687a}.illustration{display:block;width:100%;max-width:260px;height:140px;margin:auto;background:#f1f5f9;border-radius:10px}.detailStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.detailStats div{padding:10px;background:#eef2f7;border-radius:10px}.detailStats strong{display:block}.detailStats span{font-size:.85rem;color:#5c687a}.workoutDone{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:10px 0 0;padding-top:12px;border-top:1px solid #dbe3ee}.workoutDone button{background:#e8edf4;color:#172033;padding:9px 12px;font-size:.9rem}.workoutDone button.done{background:#dcfce7;color:#166534}.progressTrack{height:10px;background:#e2e8f0;border-radius:999px;overflow:hidden}.progressTrack span{display:block;height:100%;width:0;background:linear-gradient(90deg,#16a34a,#86efac);border-radius:999px;transition:width .25s}.statGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.statTile{background:#f1f5f9;border:1px solid #dbe3ee;padding:14px;border-radius:15px}.statTile strong{display:block;font-size:1.35rem;color:#166534}.statTile small{color:#64748b}.historyBars{display:flex;align-items:end;gap:8px;height:110px;padding:10px 0}.historyBar{flex:1;min-width:0;text-align:center;color:#64748b;font-size:.72rem}.historyBar i{display:block;width:100%;min-height:4px;background:linear-gradient(180deg,#86efac,#16a34a);border-radius:7px 7px 2px 2px;margin-bottom:6px}.statusLine{color:#166534;font-weight:700;font-size:.9rem}.dailyPlanDay{background:#f8fafc;color:#172033;border:1px solid #d7deea;border-radius:16px;padding:16px;margin:12px 0}.dailyPlanDay h3{color:#166534}.dayToggle{display:flex;align-items:flex-start;gap:12px;cursor:pointer;color:#172033;padding:4px 0}.dayToggle input{width:20px;height:20px;accent-color:#16a34a;margin-top:3px}.dayToggle small{display:block;color:#64748b;font-weight:500}.dayTaskContent{margin-top:8px}.restDay{opacity:.9}.taskRow{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid #dbe3ee;color:#172033}.taskRow input{margin-top:5px;accent-color:#16a34a;flex-shrink:0}.taskRow .taskInfo{flex:1;min-width:0}.taskRow small{display:block;color:#64748b}.dayTools{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:14px}.dayTools select{min-width:0;padding:10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#172033;font:inherit}.dayProgress{height:8px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:10px 0}.dayProgress span{display:block;height:100%;background:#16a34a;width:0}.dayComplete{padding:8px 10px;border-radius:10px;background:#dcfce7;color:#166534;font-weight:800;font-size:.9rem}.dailyPlanActions{display:flex;gap:8px;flex-wrap:wrap}.dailyPlanActions button{flex:1}@media(max-width:560px){.quotegrid,.libraryGrid{grid-template-columns:1fr}.detailStats{grid-template-columns:1fr}.topnav{margin:0 -4px}}
+
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+<div class="eyebrow">FITPLAN / PERSONAL COACH</div>
+<h1>Tập có kế hoạch.<br><span style="color:var(--accent)">Tiến bộ có cơ sở.</span></h1>
+<p>Trả lời 5 câu chủ chốt để tạo lịch nhanh; nếu muốn, hãy bật 10 câu chuyên sâu để cá nhân hóa thêm lịch tập, thói quen và gợi ý ăn uống.</p>
+<span class="pill">✓ Cá nhân hóa • ✓ Dùng ngay trên điện thoại</span>
+</header>
+<nav class="topnav" aria-label="Điều hướng chính"><a href="#welcome" data-page="menu" class="active">Menu</a><a href="#exerciseLibrary" data-page="library">Kho bài tập</a><a href="#journey" data-page="journey">Hành trình của bạn</a><a href="#dailyPlan" data-page="workouts" id="dailyPlanNav" class="hidden">Lịch tập của bạn</a></nav>
+<section class="card page-content page-menu" id="welcome"><h2>Chào mừng đến với FitPlan</h2><p>Hãy bắt đầu bằng 5 câu chủ chốt để tạo lịch nhanh. Bạn có thể trả lời thêm 10 câu chuyên sâu để cá nhân hóa ăn uống, hồi phục và thói quen.</p><div class="question"><span class="qtitle">Bạn có muốn trả lời thêm 10 câu chuyên sâu để áp dụng cá nhân hóa nâng cao không?</span><div class="options"><label class="option"><input type="radio" name="advancedChoice" value="yes"><span>Có, tôi muốn cá nhân hóa chuyên sâu</span></label><label class="option"><input type="radio" name="advancedChoice" value="no" checked><span>Không, tạo kế hoạch nhanh bằng 5 câu</span></label></div></div><div id="gogginsQuotes" class="quotegrid"><blockquote>“Stay hard.”<small> — David Goggins</small></blockquote><blockquote>“Who's gonna carry the boats?”<small> — David Goggins</small></blockquote><blockquote>“Don't stop when you're tired. Stop when you're done.”<small> — Câu thường được gán cho Goggins; nguồn trích dẫn không chắc chắn.</small></blockquote></div></section>
+<form id="planner" class="page-content page-menu">
+<section class="card">
+<h2>01 — Thông tin cơ bản</h2>
+<div class="grid">
+<div class="field"><label for="age">Độ tuổi</label><input id="age" type="number" min="10" max="100" placeholder="Ví dụ: 15" required></div>
+<div class="field"><label for="sex">Giới tính (không bắt buộc)</label><select id="sex"><option value="unspecified">Không muốn trả lời</option><option value="male">Nam</option><option value="female">Nữ</option><option value="other">Khác</option></select></div>
+<div class="field"><label for="height">Chiều cao (cm)</label><input id="height" type="number" min="80" max="250" placeholder="Ví dụ: 170" required></div>
+<div class="field"><label for="weight">Cân nặng (kg)</label><input id="weight" type="number" min="15" max="350" step=".1" placeholder="Ví dụ: 65" required></div>
+</div>
+<p class="hint">Thông tin này dùng để điều chỉnh mức độ gợi ý, không phải để chẩn đoán hay đánh giá ngoại hình.</p>
+</section>
+<section class="card">
+<h2>02 — 5 câu chủ chốt + 10 câu chuyên sâu tùy chọn</h2>
+<div class="question"><span class="qtitle">1. Mục tiêu chính của bạn là gì?</span><div class="options">
+<label class="option"><input type="radio" name="goal" value="muscle" required><span>Tăng cơ, khỏe hơn</span></label>
+<label class="option"><input type="radio" name="goal" value="fitness"><span>Tăng thể lực, sức bền</span></label>
+<label class="option"><input type="radio" name="goal" value="strength"><span>Tăng sức mạnh</span></label>
+<label class="option"><input type="radio" name="goal" value="habit"><span>Tạo thói quen vận động</span></label>
+</div></div>
+<div class="question"><span class="qtitle">2. Bạn muốn ưu tiên vùng nào?</span><div class="options">
+<label class="option"><input type="radio" name="focus" value="upper" required><span>Thân trên: vai, ngực, lưng, tay</span></label>
+<label class="option"><input type="radio" name="focus" value="lower"><span>Thân dưới: chân, mông</span></label>
+<label class="option"><input type="radio" name="focus" value="core"><span>Bụng và cơ lõi</span></label>
+<label class="option"><input type="radio" name="focus" value="full"><span>Toàn thân cân bằng</span></label>
+</div></div>
+<div class="question"><span class="qtitle">3. Bạn có thể tập bao nhiêu buổi mỗi tuần? Lịch sẽ được xếp theo Thứ 2–Chủ nhật, ưu tiên 2–3 ngày nghỉ để hồi phục.</span><div class="options">
+<label class="option"><input type="radio" name="days" value="2" required><span>2 buổi</span></label>
+<label class="option"><input type="radio" name="days" value="3"><span>3 buổi</span></label>
+<label class="option"><input type="radio" name="days" value="4"><span>4 buổi</span></label>
+<label class="option"><input type="radio" name="days" value="5"><span>5 buổi trở lên</span></label>
+</div></div>
+<div class="question"><span class="qtitle">4. Mỗi buổi bạn có bao nhiêu thời gian?</span><div class="options">
+<label class="option"><input type="radio" name="duration" value="15" required><span>10–20 phút</span></label>
+<label class="option"><input type="radio" name="duration" value="30"><span>20–35 phút</span></label>
+<label class="option"><input type="radio" name="duration" value="45"><span>35–50 phút</span></label>
+<label class="option"><input type="radio" name="duration" value="60"><span>50 phút trở lên</span></label>
+</div></div>
+<div class="question"><span class="qtitle">5. Bạn muốn tập bằng cách nào?</span><div class="options">
+<label class="option"><input type="radio" name="equipment" value="body" required><span>Bodyweight, không dụng cụ</span></label>
+<label class="option"><input type="radio" name="equipment" value="dumbbell"><span>Tạ tay / dây kháng lực</span></label>
+<label class="option"><input type="radio" name="equipment" value="gym"><span>Phòng gym đầy đủ</span></label>
+<label class="option"><input type="radio" name="equipment" value="mixed"><span>Kết hợp tùy hôm</span></label>
+</div></div>
+<div class="question advanced-question hidden"><span class="qtitle">6. Kinh nghiệm tập hiện tại?</span><div class="options">
+<label class="option"><input type="radio" name="level" value="beginner"><span>Mới bắt đầu / nghỉ lâu</span></label>
+<label class="option"><input type="radio" name="level" value="some"><span>Đã tập một thời gian</span></label>
+<label class="option"><input type="radio" name="level" value="regular"><span>Tập đều, kỹ thuật khá ổn</span></label>
+</div></div>
+<div class="question advanced-question hidden"><span class="qtitle">7. Hoạt động thường ngày của bạn?</span><div class="options">
+<label class="option"><input type="radio" name="activity" value="low"><span>Ngồi nhiều, ít đi lại</span></label>
+<label class="option"><input type="radio" name="activity" value="moderate"><span>Đi lại khá nhiều</span></label>
+<label class="option"><input type="radio" name="activity" value="high"><span>Chơi thể thao / vận động thường xuyên</span></label>
+</div></div>
+<div class="question advanced-question hidden"><span class="qtitle">8. Bạn thường ăn uống thế nào?</span><div class="options">
+<label class="option"><input type="radio" name="food" value="regular"><span>Ăn đủ bữa, khá đa dạng</span></label>
+<label class="option"><input type="radio" name="food" value="skip"><span>Hay bỏ bữa / ăn thất thường</span></label>
+<label class="option"><input type="radio" name="food" value="protein"><span>Ít thực phẩm giàu đạm</span></label>
+<label class="option"><input type="radio" name="food" value="snacks"><span>Hay dùng đồ ngọt / nước ngọt</span></label>
+</div></div>
+<div class="question advanced-question hidden"><span class="qtitle">9. Bạn ngủ trung bình bao lâu mỗi đêm?</span><div class="options">
+<label class="option"><input type="radio" name="sleep" value="lt7"><span>Dưới 7 giờ</span></label>
+<label class="option"><input type="radio" name="sleep" value="7to8"><span>7–8 giờ</span></label>
+<label class="option"><input type="radio" name="sleep" value="8plus"><span>8 giờ trở lên</span></label>
+</div></div>
+<div class="question advanced-question hidden"><span class="qtitle">10. Điều gì cản trở bạn nhiều nhất?</span><div class="options">
+<label class="option"><input type="radio" name="barrier" value="time"><span>Thiếu thời gian</span></label>
+<label class="option"><input type="radio" name="barrier" value="motivation"><span>Khó duy trì động lực</span></label>
+<label class="option"><input type="radio" name="barrier" value="knowledge"><span>Không biết tập bài nào</span></label>
+<label class="option"><input type="radio" name="barrier" value="food"><span>Khó sắp xếp ăn uống</span></label>
+</div></div>
+
+<div class="question advanced-question hidden"><span class="qtitle">11. Bạn thường ăn những nguồn đạm nào?</span><div class="options">
+<label class="option"><input type="radio" name="proteinFood" value="animal"><span>Trứng, thịt, cá</span></label>
+<label class="option"><input type="radio" name="proteinFood" value="dairy"><span>Sữa, sữa chua, phô mai</span></label>
+<label class="option"><input type="radio" name="proteinFood" value="plant"><span>Đậu phụ, đậu và hạt</span></label>
+<label class="option"><input type="radio" name="proteinFood" value="mixed"><span>Kết hợp nhiều loại</span></label>
+</div></div>
+<div class="question advanced-question hidden"><span class="qtitle">12. Bạn thường ăn rau và trái cây bao lâu một lần?</span><div class="options">
+<label class="option"><input type="radio" name="produce" value="often"><span>Hầu hết các ngày</span></label>
+<label class="option"><input type="radio" name="produce" value="sometimes"><span>Thỉnh thoảng</span></label>
+<label class="option"><input type="radio" name="produce" value="rare"><span>Hiếm khi</span></label>
+</div></div>
+<div class="question advanced-question hidden"><span class="qtitle">13. Bạn thường uống gì trong ngày?</span><div class="options">
+<label class="option"><input type="radio" name="drink" value="water"><span>Chủ yếu là nước lọc</span></label>
+<label class="option"><input type="radio" name="drink" value="sweet"><span>Nước ngọt / trà sữa thường xuyên</span></label>
+<label class="option"><input type="radio" name="drink" value="milk"><span>Nước lọc và sữa</span></label>
+<label class="option"><input type="radio" name="drink" value="other"><span>Khác / không cố định</span></label>
+</div></div>
+<div class="question advanced-question hidden"><span class="qtitle">14. Bạn thường ăn sáng như thế nào?</span><div class="options">
+<label class="option"><input type="radio" name="breakfast" value="full"><span>Ăn sáng đầy đủ</span></label>
+<label class="option"><input type="radio" name="breakfast" value="light"><span>Ăn nhẹ, nhanh gọn</span></label>
+<label class="option"><input type="radio" name="breakfast" value="skip"><span>Thường bỏ bữa sáng</span></label>
+</div></div>
+<div class="question advanced-question hidden"><span class="qtitle">15. Bạn có hạn chế hoặc dị ứng thực phẩm nào không?</span><div class="options">
+<label class="option"><input type="radio" name="restriction" value="none"><span>Không có / không rõ</span></label>
+<label class="option"><input type="radio" name="restriction" value="vegetarian"><span>Ăn chay</span></label>
+<label class="option"><input type="radio" name="restriction" value="dairy"><span>Hạn chế sữa</span></label>
+<label class="option"><input type="radio" name="restriction" value="allergy"><span>Có dị ứng (hãy tránh món gây dị ứng)</span></label>
+</div></div>
+<button class="primary" type="submit">Tạo lịch tập và gợi ý ăn uống →</button>
+</section>
+</form>
+<section id="results" class="hidden page-content page-menu" aria-live="polite">
+<div class="card">
+<div class="resultHead"><div><div class="eyebrow">YOUR PLAN</div><h2 id="resultTitle">Lộ trình của bạn</h2></div><button class="secondary" type="button" id="reset">Làm lại</button></div>
+<div id="summaryTags"></div><p id="intro"></p><div id="bodyNote"></div><button type="button" class="primary" id="openDailyPlan">Mở trang checklist lịch tập →</button>
+</div>
+<div class="card"><h2>03 — Lịch tập trong tuần</h2><p class="muted">Khởi động 5 phút trước mỗi buổi. Chọn biến thể dễ hơn nếu chưa giữ đúng kỹ thuật.</p><div id="schedule"></div></div>
+<div class="card"><h2>04 — Các bài tập phù hợp</h2><div id="exerciseBank"></div></div>
+
+<div class="card"><h2>06 — Checklist hằng ngày</h2><div id="checklist" class="checklist"></div><p class="hint">Tích vào những việc bạn đã làm. Checklist được giữ trong trang hiện tại; tải lại trang có thể xóa trạng thái.</p></div>
+
+
+<div class="card"><h2>08 — Nhắc nhở tinh thần</h2>
+<blockquote style="margin:10px 0;padding:14px;border-left:3px solid #111;background:#f1f1f1;border-radius:0 10px 10px 0"><strong>“Stay hard.”</strong><p class="muted">David Goggins — lời nhắc ngắn về sự kiên trì.</p></blockquote>
+<blockquote style="margin:10px 0;padding:14px;border-left:3px solid #111;background:#f1f1f1;border-radius:0 10px 10px 0"><strong>“Who's gonna carry the boats?”</strong><p class="muted">David Goggins — câu nói nổi tiếng thường gắn với tinh thần nỗ lực.</p></blockquote>
+<p class="hint">Kỷ luật không có nghĩa là phớt lờ chấn thương, thiếu ngủ hay đói. Hãy bền bỉ và biết hồi phục.</p>
+</div>
+<div class="card"><h2>09 — Cách tăng tiến an toàn</h2><ul id="progression"></ul><div class="note">Dừng tập nếu đau nhói, chóng mặt, khó thở bất thường hoặc đau ngực. Nếu có chấn thương, bệnh lý hay được dặn hạn chế vận động, hãy hỏi chuyên gia y tế trước khi tập.</div></div>
+</section>
+<section class="card page-content page-library" id="exerciseLibrary"><h2>Kho bài tập theo nhóm cơ</h2><p class="muted">Chọn nhóm cơ để lọc bài tập. Mỗi bài có cách làm, rep, volume và thời gian nghỉ; nút ảnh sẽ mở ảnh minh họa thật trên web, không dùng hình tự vẽ.</p><div class="libraryFilters" id="libraryFilters"></div><div id="libraryList" class="libraryGrid"></div><div id="exerciseDetail" class="day hidden" aria-live="polite"></div></section>
+<section class="card page-content page-journey" id="journey"><h2>Hành trình của bạn</h2><p class="muted">Dữ liệu được lưu trên trình duyệt của thiết bị này. Ước tính calo và thay đổi cân nặng chỉ mang tính tham khảo, không phải phép đo chính xác.</p><div class="day"><h3>Tài khoản FitPlan</h3><p class="muted">Đăng ký/đăng nhập trên thiết bị này để mở lại hành trình mà không cần xuất JSON. Đây là tài khoản cục bộ, chưa đồng bộ lên máy chủ hoặc thiết bị khác.</p><div class="grid"><div class="field"><label for="accountEmail">Email hoặc tên đăng nhập</label><input id="accountEmail" autocomplete="username" placeholder="Ví dụ: tenban"></div><div class="field"><label for="accountPassword">Mật khẩu</label><input id="accountPassword" type="password" autocomplete="current-password" minlength="6" placeholder="Ít nhất 6 ký tự"></div></div><div class="dailyPlanActions"><button type="button" class="primary" id="registerAccount">Đăng ký</button><button type="button" class="secondary" id="loginAccount">Đăng nhập</button><button type="button" class="secondary hidden" id="logoutAccount">Đăng xuất</button></div><p id="accountStatus" class="hint" role="status">Chưa đăng nhập.</p></div><div class="day"><h3>Thêm FitPlan ra màn hình chính</h3><p class="muted">Tạo lối tắt để mở nhanh như ứng dụng. Nếu nút cài đặt không xuất hiện, mở menu trình duyệt và chọn “Thêm vào màn hình chính”.</p><button type="button" class="primary" id="installShortcut">＋ Tạo phím tắt / Cài đặt ứng dụng</button><p id="installStatus" class="hint" role="status"></p></div><div class="grid"><div class="field"><label for="journeyStart">Ngày bắt đầu</label><input id="journeyStart" type="date"></div><div class="field"><label for="journeyWeight">Cân nặng hiện tại (kg, tùy chọn)</label><input id="journeyWeight" type="number" min="15" max="350" step=".1" placeholder="Ví dụ: 65"></div><div class="field"><label for="weeklyMinutes">Tổng phút vận động mỗi tuần</label><input id="weeklyMinutes" type="number" min="0" max="3000" value="150"></div><div class="field"><label for="journeyDays">Số buổi tập đã hoàn thành</label><input id="journeyDays" type="number" min="0" max="1000" value="0"></div></div><div class="statGrid"><div class="statTile"><small>Ngày từ lúc bắt đầu</small><strong id="streakValue">0 ngày</strong></div><div class="statTile"><small>Buổi tập hoàn thành</small><strong id="completedCount">0</strong></div><div class="statTile"><small>Phút vận động/tuần</small><strong id="weeklyMinutesStat">0</strong></div></div><div class="day"><h3>Tiến độ mục tiêu tuần</h3><p class="muted">Mục tiêu mặc định 150 phút vận động/tuần; có thể chỉnh ở trên.</p><div class="progressTrack"><span id="weeklyProgress"></span></div><p id="weeklyProgressText" class="hint">0 / 150 phút</p><h3 style="margin-top:16px">Hoạt động 7 ngày gần nhất</h3><div id="activityHistory" class="historyBars"></div></div><div class="two"><div class="day"><small class="muted">Calo vận động ước tính/tuần</small><h2 id="calorieEstimate">— kcal</h2></div><div class="day"><small class="muted">Lịch tập đã lưu</small><h2 id="planSavedState">Chưa có</h2></div></div><div class="day"><h3>Ước tính thay đổi sau 1 tuần</h3><p id="weightEstimate">Chưa đủ dữ liệu để ước tính.</p><p class="hint">Không thể dự đoán số kg giảm đáng tin cậy chỉ từ thời gian tập. Cân nặng dao động theo nước, thức ăn, tăng trưởng và nhiều yếu tố khác; không nên dùng mục tiêu giảm cân nhanh.</p></div><button class="primary" type="button" id="saveJourney">Lưu hành trình</button><p id="journeyStatus" class="hint" role="status"></p><button class="secondary" type="button" id="exportProgress">Xuất bản sao lưu dữ liệu</button><p class="hint">Bản sao lưu tải về dạng JSON để bạn giữ hoặc chuyển sang thiết bị khác.</p><hr><h3>Bạn có đang bị chững cân không?</h3><p class="muted">Chọn tình huống gần với bạn nhất để nhận gợi ý phù hợp.</p><div class="options" id="plateauOptions"><label class="option"><input type="radio" name="plateau" value="nottracking"><span>Chưa theo dõi đều / cân nặng dao động từng ngày</span></label><label class="option"><input type="radio" name="plateau" value="short"><span>Mới vài ngày đến dưới 2 tuần không thay đổi</span></label><label class="option"><input type="radio" name="plateau" value="long"><span>Khoảng 3–4 tuần hoặc lâu hơn không thay đổi</span></label><label class="option"><input type="radio" name="plateau" value="training"><span>Cân nặng đứng yên nhưng sức mạnh/thể lực tăng</span></label><label class="option"><input type="radio" name="plateau" value="tired"><span>Mệt mỏi, đói nhiều, ngủ kém hoặc hiệu suất giảm</span></label></div><div id="plateauAdvice" class="note hidden" style="margin-top:12px"></div></section>
+<section class="card page-content page-workouts" id="dailyPlan"><div class="resultHead"><div><div class="eyebrow">YOUR DAILY WORKOUTS</div><h2>Lịch tập của bạn</h2></div><span class="pill" id="dailyPlanSummary">Chưa có lịch</span></div><p class="muted">Mỗi ngày có checklist riêng. Khi tích đủ tất cả bài tập của một buổi, FitPlan tự cộng 1 đơn vị vào tiến độ. Bạn có thể thêm bài từ Kho bài tập bất cứ lúc nào.</p><div class="day"><strong id="overallDailyProgress">0 / 0 buổi hoàn thành</strong><div class="progressTrack"><span id="dailyOverallBar"></span></div><p class="hint">Chỉ tính hoàn thành khi mọi bài tập trong buổi đó đã được đánh dấu.</p></div><div id="dailyPlanList"></div><div class="dailyPlanActions"><button type="button" class="secondary" id="backToMenu">← Quay lại Menu</button><button type="button" class="secondary" id="goExerciseLibrary">Mở Kho bài tập</button></div><p id="dailyPlanStatus" class="hint" role="status"></p></section>
+<footer>FitPlan là công cụ gợi ý giáo dục, không thay thế bác sĩ hoặc chuyên gia dinh dưỡng. Nếu bạn đang tuổi phát triển, đừng nhịn ăn, bỏ bữa hay đặt mục tiêu giảm cân nhanh; hãy ưu tiên ăn đủ, ngủ đủ và tập đúng kỹ thuật.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const get=n=>document.querySelector('input[name="'+n+'"]:checked')?.value;
+const data={
+ upper:[
+  ['Chống đẩy','Ngực, vai trước, tay sau','2–3 hiệp × 6–12 lần','Chống tay lên bàn/tường nếu khó; thân người thành đường thẳng.'],
+  ['Kéo lưng','Lưng và tay trước','2–3 hiệp × 8–12 lần','Có tạ/dây: row. Không dụng cụ: kéo khăn chỉ khi điểm neo thật chắc; nếu không, thay bằng prone W.'],
+  ['Pike push-up / đẩy vai với tạ','Vai','2 hiệp × 6–10 lần','Chọn biến thể không đau vai; không cần tập đến kiệt sức.'],
+  ['Prone W raise','Lưng trên, vai sau','2 hiệp × 10–15 lần','Nằm sấp, kéo khuỷu tay về hình chữ W, không nhún cổ.'],
+  ['Plank','Cơ lõi','2 hiệp × 15–40 giây','Giữ lưng trung tính, thở đều.']],
+ lower:[
+  ['Squat','Đùi, mông','2–3 hiệp × 8–15 lần','Ngồi hông ra sau, gối cùng hướng mũi chân.'],
+  ['Glute bridge','Mông, hông','2–3 hiệp × 10–15 lần','Siết mông ở trên, không ưỡn lưng quá mức.'],
+  ['Reverse lunge','Chân, thăng bằng','2 hiệp × 6–10 lần mỗi bên','Bám ghế để giữ thăng bằng nếu cần.'],
+  ['Calf raise','Bắp chân','2 hiệp × 12–20 lần','Lên xuống có kiểm soát, vịn tường khi cần.'],
+  ['Dead bug','Cơ lõi','2 hiệp × 6–10 lần mỗi bên','Lưng dưới ổn định, di chuyển chậm.']],
+ full:[
+  ['Squat','Chân và mông','2–3 hiệp × 8–15 lần','Giữ gối cùng hướng mũi chân.'],
+  ['Chống đẩy','Ngực, vai, tay sau','2–3 hiệp × 6–12 lần','Có thể chống tay lên mặt phẳng cao.'],
+  ['Row với tạ/dây','Lưng và tay trước','2–3 hiệp × 8–12 lần','Không giật người; nếu không có dụng cụ, tập prone W raise.'],
+  ['Glute bridge','Mông và hông','2 hiệp × 10–15 lần','Siết mông, không ưỡn lưng.'],
+  ['Dead bug hoặc plank','Cơ lõi','2 hiệp','Chọn dead bug 6–10 lần mỗi bên hoặc plank 15–40 giây.']],
+ core:[
+  ['Dead bug','Cơ lõi sâu','2–3 hiệp × 6–10 lần mỗi bên','Thở ra khi duỗi tay/chân; giữ lưng ổn định.'],
+  ['Bird dog','Cơ lõi và lưng','2 hiệp × 8–10 lần mỗi bên','Không xoay hông.'],
+  ['Plank','Cơ lõi','2–3 hiệp × 15–40 giây','Dừng khi hông võng hoặc nín thở.'],
+  ['Side plank gối chạm sàn','Cơ xiên bụng','2 hiệp × 15–25 giây mỗi bên','Biến thể dễ, giữ thân thẳng.'],
+  ['Squat','Toàn thân','2 hiệp × 8–12 lần','Tập toàn thân cân bằng, không chỉ tập bụng.']]
+};
+function exercises(){
+ let e=data[get('focus')||'full'].slice();
+ if(get('equipment')==='dumbbell'||get('equipment')==='gym'||get('equipment')==='mixed'){
+   e=e.map(x=>x[0]==='Row với tạ/dây'?['Row với tạ / máy kéo','Lưng và tay trước',x[2],'Kéo khuỷu tay về sau, tránh nhún vai.']:x);
+ }
+ if(get('equipment')==='body') e=e.map(x=>x[0]==='Row với tạ/dây'?['Prone W raise','Lưng trên, vai sau','2–3 hiệp × 10–15 lần','Nằm sấp, nâng tay thành chữ W; không dùng bàn ghế làm điểm neo không chắc.']:x);
+ return e;
+}
+function makePlan(ev){
+ ev.preventDefault();
+ const age=+ $('age').value,h=+$('height').value,w=+$('weight').value;
+ if(age<10||age>100||h<80||h>250||w<15||w>350){alert('Hãy kiểm tra lại tuổi, chiều cao và cân nặng.');return;}
+ const goal=get('goal'),focus=get('focus'),days=+get('days'),mins=+get('duration'),equip=get('equipment'),level=get('level'),activity=get('activity'),food=get('food'),sleep=get('sleep'),barrier=get('barrier'),proteinFood=get('proteinFood'),produce=get('produce'),drink=get('drink'),breakfast=get('breakfast'),restriction=get('restriction');
+ const focusName={upper:'Thân trên',lower:'Thân dưới',core:'Cơ lõi',full:'Toàn thân'}[focus];
+ const goalName={muscle:'Tăng cơ và sức khỏe',fitness:'Thể lực và sức bền',strength:'Sức mạnh',habit:'Xây thói quen vận động'}[goal];
+ $('resultTitle').textContent='Lộ trình: '+goalName;
+ $('summaryTags').innerHTML=[goalName,focusName,days+' buổi/tuần',mins+' phút/buổi',({body:'Bodyweight',dumbbell:'Tạ/dây',gym:'Phòng gym',mixed:'Kết hợp'})[equip]].map(x=>'<span class="tag">'+x+'</span>').join('');
+ $('intro').textContent='Mức gợi ý: '+(level==='beginner'?'cơ bản, ưu tiên kỹ thuật và nhịp độ vừa phải':level==='some'?'cơ bản đến trung bình, tăng dần khi hồi phục tốt':'trung bình, vẫn cần giữ kỹ thuật')+'. Mỗi hiệp nên kết thúc khi bạn vẫn có thể làm thêm khoảng 2–3 lần với tư thế đúng.';
+ let note='';
+ if(age<18) note='<p class="note">Bạn đang tuổi phát triển: chiều cao/cân nặng không đủ để kết luận cần giảm cân. Ưu tiên sức mạnh, thể lực, ăn đủ và ngủ đủ; không dùng chế độ ăn thiếu năng lượng hay mục tiêu giảm cân nhanh.</p>';
+ else note='<p class="hint">Không cần cân đo thức ăn quá mức. Theo dõi sức mạnh, năng lượng, giấc ngủ và mức hồi phục sẽ hữu ích hơn chỉ nhìn cân nặng.</p>';
+ $('bodyNote').innerHTML=note;
+ const ex=exercises();
+ const warm='Khởi động 5 phút: đi bộ tại chỗ, xoay khớp nhẹ, squat/chống đẩy biến thể dễ.';
+  // Lịch theo đúng số buổi người dùng chọn; mỗi buổi có 6–8 bài, phân bổ nhóm cơ rõ ràng.
+ const trainCount=Math.min(5,Math.max(2,days));
+ const trainingDays={2:[0,3],3:[0,2,4],4:[0,1,3,5],5:[0,1,3,4,5]}[trainCount];
+ const week=[
+  {id:'mon',title:'Thứ 2',focus:'A — Buổi chính'},
+  {id:'tue',title:'Thứ 3',focus:'B — Buổi bổ trợ'},
+  {id:'wed',title:'Thứ 4',focus:'C — Buổi chính'},
+  {id:'thu',title:'Thứ 5',focus:'D — Buổi bổ trợ'},
+  {id:'fri',title:'Thứ 6',focus:'E — Buổi chính'},
+  {id:'sat',title:'Thứ 7',focus:'F — Buổi bổ trợ'},
+  {id:'sun',title:'Chủ nhật',focus:'G — Buổi nhẹ'}
+ ].map((d,i)=>({...d,train:trainingDays.includes(i)}));
+ const categorySplits={
+  upper:[['Ngực','Lưng','Vai','Tay sau','Bụng'],['Lưng','Ngực','Vai','Tay trước','Bụng'],['Vai','Ngực','Lưng','Tay sau','Tay trước'],['Ngực','Lưng','Tay trước','Tay sau','Bụng'],['Lưng','Vai','Ngực','Tay sau','Bụng']],
+  lower:[['Đùi trước','Mông','Đùi sau','Bắp chân','Bụng'],['Mông','Đùi sau','Đùi trước','Bắp chân','Cơ lõi'],['Đùi trước','Mông','Đùi sau','Bụng','Bắp chân'],['Đùi sau','Mông','Đùi trước','Bắp chân','Bụng'],['Mông','Đùi trước','Đùi sau','Cơ lõi','Bắp chân']],
+  core:[['Bụng','Cơ lõi','Toàn thân','Mông'],['Bụng','Cơ lõi','Lưng','Toàn thân'],['Bụng','Toàn thân','Mông','Lưng'],['Cơ lõi','Bụng','Toàn thân','Chân & mông'],['Bụng','Lưng','Toàn thân','Mông']],
+  full:[['Ngực','Lưng','Đùi trước','Mông','Bụng'],['Lưng','Vai','Đùi sau','Mông','Cơ lõi'],['Ngực','Lưng','Chân & mông','Vai','Bụng'],['Vai','Lưng','Đùi trước','Đùi sau','Bụng'],['Ngực','Lưng','Mông','Toàn thân','Bụng']]
+ };
+ const schedule=week.map((d,di)=>{
+  if(!d.train) return '<div class="day workoutCard restCard" data-workout-id="'+d.id+'"><h3>'+d.title+' · Ngày nghỉ / hồi phục</h3><p>Đi bộ nhẹ 10–20 phút nếu thích, giãn cơ nhẹ hoặc nghỉ hoàn toàn. Không cần tập bù vào ngày nghỉ.</p></div>';
+  const split=(categorySplits[focus]||categorySplits.full)[trainingDays.indexOf(di)%((categorySplits[focus]||categorySplits.full).length)];
+  let pool=library.filter(x=>split.includes(x.cat));
+  if(equip==='body') pool=pool.filter(x=>!/(dumbbell|barbell|cable|machine|bench press|lat pulldown|smith|kettlebell|tạ đòn|máy kéo|tạ tay|ghế máy)/i.test(x.name));
+  if(equip==='dumbbell') pool=pool.filter(x=>!/(cable|machine|lat pulldown|smith|xà kép|máy)/i.test(x.name));
+  if(!pool.length) pool=library.filter(x=>['Toàn thân','Bụng','Cơ lõi','Ngực','Lưng','Chân'].includes(x.cat));
+  // Chọn bài luân phiên theo từng nhóm cơ để mỗi buổi có bài cụ thể, không chỉ hiện tên nhóm cơ.
+  const chosen=[], used=new Set();
+  for(const cat of split){
+    const options=pool.filter(x=>x.cat===cat&&!used.has(x.name));
+    if(options.length){const pick=options[(di+chosen.length)%options.length];chosen.push(pick);used.add(pick.name);}
+  }
+  for(let round=0;chosen.length<7&&round<pool.length*3;round++){
+    const x=pool[(round+di*2)%pool.length];
+    if(!used.has(x.name)){chosen.push(x);used.add(x.name);}
+  }
+  const list=chosen.map((x,i)=>'<div class="exercise"><strong>'+ (i+1)+'. '+escapeHtml(x.name)+'</strong><small><b>Nhóm cơ:</b> '+escapeHtml(x.cat)+' — '+escapeHtml(x.muscle)+'</small><small><b>Khối lượng:</b> '+escapeHtml(x.reps)+' · <b>Nghỉ:</b> '+escapeHtml(x.rest)+'</small><p><b>Cách tập:</b> '+escapeHtml(x.how)+'</p><p class="hint"><b>Lưu ý:</b> '+escapeHtml(x.tip)+'</p></div>').join('');
+  return '<div class="day workoutCard" data-workout-id="'+d.id+'"><h3>'+d.title+' · '+(focus==='upper'?'Thân trên':focus==='lower'?'Thân dưới':focus==='core'?'Cơ lõi':'Toàn thân')+'</h3><p class="muted"><b>Khởi động 5–8 phút:</b> đi bộ tại chỗ hoặc vận động nhẹ, xoay khớp vai/hông, sau đó làm 1 hiệp rất nhẹ của bài đầu tiên.</p><p class="hint">Tập theo đúng thứ tự dưới đây. Chọn mức khó để kết thúc mỗi hiệp vẫn còn dư khoảng 2–3 lần lặp; không cần tập đến kiệt sức.</p>'+list+(goal==='fitness'?'<div class="exercise"><strong>8. Cardio nhẹ (tùy sức)</strong><small>Đi bộ nhanh/đạp xe 10–20 phút ở mức vẫn nói chuyện được.</small></div>':'')+'<p class="hint"><b>Tổng thời gian:</b> khoảng '+mins+' phút. Nghỉ theo từng bài như ghi ở trên; nếu hết thời gian, ưu tiên làm đủ bài với kỹ thuật tốt thay vì vội.</p></div>';
+ }).join('');
+$('schedule').innerHTML=schedule+'<p class="hint">Lịch được xếp theo ngày trong tuần. Lịch đã được xếp theo đúng số buổi bạn chọn, mỗi buổi hiển thị tên bài, nhóm cơ, số hiệp/lần, thời gian nghỉ và cách thực hiện; các ngày còn lại dành cho hồi phục. Ưu tiên kỹ thuật, ngủ đủ và hồi phục; nếu đau kéo dài hãy giảm khối lượng.</p>';
+ $('dailyPlanNav').classList.remove('hidden');
+ $('exerciseBank').innerHTML=ex.map(x=>'<div class="exercise"><strong>'+x[0]+' — '+x[1]+'</strong><small>'+x[2]+'</small><p>'+x[3]+'</p></div>').join('');
+ let foodTips=[
+  'Ăn đều các bữa chính; đừng bỏ bữa để “bù” cho hôm ăn nhiều.',
+  'Trong các bữa, kết hợp nguồn đạm (trứng, cá, thịt, đậu phụ, sữa/sữa chua), tinh bột (cơm, khoai, yến mạch), rau quả và chất béo phù hợp.',
+  'Sau tập, ăn bữa bình thường có đạm và tinh bột; không bắt buộc mua bột protein hay thực phẩm bổ sung.',
+  'Uống nước đều trong ngày; khi vận động ra nhiều mồ hôi, uống thêm theo nhu cầu.'
+ ];
+ if(food==='skip')foodTips.unshift('Ưu tiên khôi phục nhịp ăn đều: chuẩn bị bữa sáng hoặc món tiện mang theo như sữa chua, trái cây, bánh mì trứng.');
+ if(food==='protein')foodTips.unshift('Thêm nguồn đạm dễ tiếp cận vào bữa: trứng, đậu phụ, sữa, sữa chua, cá hoặc đậu.');
+ if(food==='snacks')foodTips.unshift('Không cần cấm tuyệt đối đồ ngọt; thử thay một phần nước ngọt bằng nước lọc và ăn bữa chính đủ no.');
+ if(sleep==='lt7')foodTips.push('Giấc ngủ có thể đang hạn chế hồi phục. Thử tăng thời gian ngủ dần và giữ giờ ngủ-thức ổn định.');
+ if(activity==='low')foodTips.push('Tăng vận động nhỏ trong ngày: đứng dậy đi lại vài phút sau thời gian ngồi lâu.');
+ if(proteinFood==='plant')foodTips.push('Gợi ý đạm thiên thực vật: đậu phụ, đậu nành, đậu lăng, đậu đỏ và các loại hạt; kết hợp đa dạng thực phẩm trong ngày.');
+ if(produce==='rare')foodTips.push('Thêm một lựa chọn dễ làm mỗi ngày: chuối, cam, táo, cà rốt hoặc rau theo mùa.');
+ if(drink==='sweet')foodTips.push('Giảm dần đồ uống nhiều đường nếu muốn: đổi một phần sang nước lọc; không cần cấm tuyệt đối.');
+ if(breakfast==='skip')foodTips.push('Gợi ý bữa sáng tiện: bánh mì trứng; yến mạch + sữa + chuối; hoặc sữa chua + trái cây + granola.');
+ const mealIdeas = restriction==='vegetarian'
+ ? ['Cơm + đậu phụ + rau xào','Yến mạch + sữa phù hợp + chuối','Bánh mì + trứng (nếu bạn ăn trứng) hoặc đậu phụ','Khoai lang + đậu/đậu hũ + rau']
+ : restriction==='dairy'
+ ? ['Cơm + cá/gà/trứng + rau','Bánh mì trứng + trái cây','Yến mạch nấu nước hoặc sữa thực vật phù hợp + chuối','Khoai lang + đậu phụ/thịt nạc + rau']
+ : ['Cơm + trứng/cá/gà/đậu phụ + rau','Bánh mì trứng + trái cây','Yến mạch + sữa hoặc sữa chua + chuối','Khoai lang + thịt nạc/đậu phụ + rau'];
+
+ const checks=['Hoàn thành vận động theo khả năng hoặc đi bộ nhẹ','Ăn đủ các bữa, có nguồn đạm và rau quả','Uống nước đều trong ngày','Dành thời gian ngủ và thư giãn','Ghi lại một điều tiến bộ (kỹ thuật, sức bền hoặc tâm trạng)'];
+ if(barrier==='time')checks[0]='Dành ít nhất 10 phút cho vận động nếu hôm nay bận';
+ if(barrier==='motivation')checks[4]='Đánh dấu đã xuất hiện và bắt đầu, dù chỉ tập ngắn';
+ $('checklist').innerHTML=checks.map((t,i)=>'<label><input type="checkbox"><span>'+t+'</span></label>').join('');
+ bindChecklistPersistence();
+ const prog=[
+  'Tuần đầu tập nhẹ hơn mức tối đa; học đúng động tác trước khi tăng độ khó.',
+  'Khi hoàn thành mọi hiệp với tư thế ổn định trong 2 buổi liên tiếp, tăng 1–2 lần mỗi hiệp hoặc chọn biến thể khó hơn một chút.',
+  'Nghỉ khoảng 60–120 giây giữa hiệp; thở đều, không cần tập đến kiệt sức.',
+  'Nếu đau nhói hoặc kỹ thuật xấu đi, dừng bài đó và chuyển sang biến thể dễ hơn.',
+  barrier==='knowledge'?'Quay video kỹ thuật để tự kiểm tra hoặc nhờ huấn luyện viên/người lớn có kinh nghiệm hướng dẫn.':barrier==='motivation'?'Đặt lịch cố định và mục tiêu nhỏ; một buổi ngắn vẫn tốt hơn bỏ hẳn.':barrier==='food'?'Chọn 1–2 thay đổi dễ giữ trong tuần thay vì sửa mọi thứ cùng lúc.':'Chuẩn bị sẵn quần áo/dụng cụ để giảm thời gian bắt đầu.'
+ ];
+ if(sleep==='lt7')prog.push('Cố gắng ưu tiên giấc ngủ; hồi phục là một phần của chương trình tập.');
+ $('progression').innerHTML=prog.map(t=>'<li>'+t+'</li>').join('');
+ $('results').classList.remove('hidden');initDailyPlanFromSchedule();savePlanSnapshot();bindWorkoutButtons();bindChecklistPersistence();$('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Lưu kế hoạch, checklist và các buổi tập hoàn thành ngay trên thiết bị.
+const WORKOUT_KEY='fitplanCompletedWorkouts';
+function readWorkoutLog(){try{return JSON.parse(localStorage.getItem(WORKOUT_KEY)||'{}')}catch(e){return {}}}
+function localDayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function writeWorkoutLog(v){try{localStorage.setItem(WORKOUT_KEY,JSON.stringify(v))}catch(e){}}
+function bindWorkoutButtons(){const log=readWorkoutLog();document.querySelectorAll('.workoutCard').forEach(card=>{const id=card.dataset.workoutId;const key=id+'|'+localDayKey();const btn=card.querySelector('.markWorkout');const state=card.querySelector('.workoutState');const done=!!log[key];btn.classList.toggle('done',done);btn.textContent=done?'✓ Đã hoàn thành · Bỏ đánh dấu':'✓ Đánh dấu hoàn thành';state.textContent=done?'Đã hoàn thành và lưu':'Chưa hoàn thành';btn.onclick=()=>{showPage('workouts');const target=document.querySelector('[data-daily-day="'+id+'"]');if(target)target.scrollIntoView({behavior:'smooth',block:'start'});};});renderProgressStats();}
+function bindChecklistPersistence(){const box=$('checklist');if(!box)return;let saved=[];try{saved=JSON.parse(localStorage.getItem('fitplanChecks')||'[]')}catch(e){}box.querySelectorAll('input[type=checkbox]').forEach((el,i)=>{if(saved[i]!==undefined)el.checked=!!saved[i];el.onchange=()=>{localStorage.setItem('fitplanChecks',JSON.stringify([...box.querySelectorAll('input')].map(c=>c.checked)));savePlanSnapshot();};});}
+function savePlanSnapshot(){try{const values={};$('planner').querySelectorAll('input,select,textarea').forEach((el,i)=>{if(!el.name&&!el.id)return;const k=el.name||el.id;if(el.type==='radio'||el.type==='checkbox'){if(el.checked)values[k]=el.value;}else values[k]=el.value;});localStorage.setItem('fitplanPlan',JSON.stringify({values,html:$('results').innerHTML,visible:!$('results').classList.contains('hidden')}));persistAccountSnapshot();}catch(e){}}
+function restorePlanSnapshot(){try{const p=JSON.parse(localStorage.getItem('fitplanPlan')||'null');if(!p)return;const vals=p.values||{};$('planner').querySelectorAll('input,select,textarea').forEach(el=>{const k=el.name||el.id;if(!(k in vals))return;if(el.type==='radio'||el.type==='checkbox')el.checked=el.value===vals[k];else el.value=vals[k];});if(p.visible&&p.html){$('results').innerHTML=p.html;$('results').classList.remove('hidden');bindChecklistPersistence();bindWorkoutButtons();}}catch(e){}}
+function renderProgressStats(){const log=readWorkoutLog();const entries=Object.entries(log);const daily=readDailyPlan();const hasDaily=daily.length>0;const count=hasDaily?daily.filter(d=>!d.isRest&&d.tasks.length>0&&d.tasks.every(t=>t.done)).length:entries.length;const c=$('completedCount');if(c)c.textContent=count;const plan=$('planSavedState');if(plan)plan.textContent=localStorage.getItem('fitplanPlan')?'Đã lưu':'Chưa có';const hist=$('activityHistory');if(hist){const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const iso=d.toISOString().slice(0,10);days.push({iso,label:d.toLocaleDateString('vi-VN',{weekday:'short'}),n:entries.filter(([k,v])=>v===iso).length});}const max=Math.max(1,...days.map(x=>x.n));hist.innerHTML=days.map(x=>'<div class="historyBar" title="'+x.iso+': '+x.n+' buổi"><i style="height:'+Math.max(4,x.n/max*72)+'px"></i>'+x.label+'</div>').join('');}}
+$('exportProgress')?.addEventListener('click',()=>{const backup={exportedAt:new Date().toISOString(),plan:localStorage.getItem('fitplanPlan'),journey:localStorage.getItem('fitplanJourney'),completedWorkouts:localStorage.getItem(WORKOUT_KEY),checklist:localStorage.getItem('fitplanChecks')};const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='fitplan-backup.json';a.click();URL.revokeObjectURL(url);$('journeyStatus').textContent='Đã tạo bản sao lưu. Hãy kiểm tra thư mục Tải xuống.';});
+// Tùy chọn câu hỏi chuyên sâu: 5 câu chủ chốt luôn đủ để tạo kế hoạch.
+function toggleAdvanced(){const yes=document.querySelector('input[name="advancedChoice"]:checked')?.value==='yes';document.querySelectorAll('.advanced-question').forEach(el=>el.classList.toggle('hidden',!yes));}
+document.querySelectorAll('input[name="advancedChoice"]').forEach(el=>el.addEventListener('change',toggleAdvanced));toggleAdvanced();
+// Thư viện bài tập mở rộng. Mỗi bài được xếp theo nhóm cơ chính; nhóm cơ phụ ghi riêng.
+const library = [
+// NGỰC
+['Ngực','Chống đẩy','Ngực; vai trước; tay sau','3 hiệp × 6–15 lần','18–45 lần','60–120 giây','Tay hơi rộng hơn vai, thân người thẳng, hạ ngực có kiểm soát rồi đẩy lên.','Không võng lưng; có thể chống tay lên mặt bàn chắc chắn để giảm độ khó.'],
+['Ngực','Chống đẩy tay rộng','Ngực; vai trước; tay sau','3 × 6–12','18–36 lần','60–120 giây','Đặt tay rộng hơn chống đẩy thường một chút, hạ ngực chậm và đẩy lên.','Không dang khuỷu quá mức gây khó chịu vai.'],
+['Ngực','Chống đẩy tay hẹp','Ngực trong; tay sau','3 × 5–12','15–36 lần','60–120 giây','Đặt tay hẹp hơn vai, giữ khuỷu gần thân và đẩy sàn.','Bắt đầu bằng số lần vừa sức; không ép cổ tay đau.'],
+['Ngực','Chống đẩy nghiêng (tay kê cao)','Ngực; tay sau; vai trước','3 × 8–15','24–45 lần','60–90 giây','Đặt tay lên bàn/ghế cố định, giữ thân thẳng và hạ ngực về điểm tựa.','Dùng điểm tựa không trượt.'],
+['Ngực','Chống đẩy dốc xuống (chân kê cao)','Ngực trên; vai trước; tay sau','3 × 5–12','15–36 lần','90–120 giây','Kê chân trên bục chắc chắn, hạ người có kiểm soát rồi đẩy lên.','Khó hơn chống đẩy thường; chỉ làm khi kiểm soát tốt.'],
+['Ngực','Bench press với thanh đòn','Ngực; tay sau; vai trước','3 × 6–10','18–30 lần','2–3 phút','Nằm trên ghế, hạ thanh về giữa ngực rồi đẩy lên theo quỹ đạo ổn định.','Nên có người hỗ trợ và chốt an toàn.'],
+['Ngực','Dumbbell bench press','Ngực; tay sau; vai trước','3 × 8–12','24–36 lần','90–150 giây','Hạ hai tạ cạnh ngực, cổ tay thẳng, đẩy lên không va mạnh hai tạ.','Chọn tạ có thể kiểm soát suốt hiệp.'],
+['Ngực','Incline dumbbell press','Ngực trên; vai trước; tay sau','3 × 8–12','24–36 lần','90–150 giây','Ghế nghiêng khoảng 30–45°, hạ tạ cạnh ngực trên rồi đẩy lên.','Không nâng ghế quá đứng khiến vai chịu tải nhiều.'],
+['Ngực','Dumbbell fly','Ngực','2–3 × 10–15','20–45 lần','60–90 giây','Nằm ghế, khuỷu hơi cong, mở tay sang hai bên trong biên độ thoải mái rồi khép lại.','Không hạ tạ quá sâu làm căng vai.'],
+['Ngực','Cable crossover','Ngực','3 × 10–15','30–45 lần','60–90 giây','Đứng giữa hai cáp, khép tay vòng cung trước ngực và siết ngực.','Thân ổn định, không giật dây.'],
+['Ngực','Dips xà kép','Ngực dưới; tay sau; vai','2–3 × 5–10','10–30 lần','90–150 giây','Giữ người giữa hai thanh, gập khuỷu hạ vừa sức rồi đẩy lên.','Tránh hạ quá sâu nếu vai không thoải mái.'],
+// LƯNG
+['Lưng','Pull-up (hít xà)','Xô; lưng trên; tay trước','3 × 3–10','9–30 lần','2–3 phút','Nắm xà, kéo ngực hướng về xà, hạ xuống có kiểm soát.','Dùng dây hỗ trợ nếu chưa kéo được; xà phải lắp chắc chắn.'],
+['Lưng','Chin-up (hít xà ngửa tay)','Xô; tay trước','3 × 4–10','12–30 lần','2 phút','Lòng bàn tay hướng về mình, kéo người lên và hạ chậm.','Không đung đưa để lấy đà.'],
+['Lưng','Lat pulldown','Cơ xô; tay trước','3 × 8–12','24–36 lần','90–120 giây','Kéo thanh về phần ngực trên, đưa khuỷu xuống, trả thanh chậm.','Không kéo thanh ra sau gáy.'],
+['Lưng','Seated cable row','Lưng giữa; xô; tay trước','3 × 8–12','24–36 lần','90–120 giây','Ngồi vững, kéo tay cầm về bụng dưới, siết bả vai rồi duỗi tay từ từ.','Không ngả người giật tạ.'],
+['Lưng','Bent-over barbell row','Lưng giữa; xô; tay trước','3 × 6–10','18–30 lần','2 phút','Gập hông, giữ lưng trung tính, kéo thanh về bụng rồi hạ chậm.','Giảm tải nếu lưng dưới mất tư thế.'],
+['Lưng','One-arm dumbbell row','Xô; lưng giữa; tay trước','3 × 8–12 mỗi bên','48–72 lần hai bên','60–90 giây','Chống tay lên ghế chắc, kéo tạ về hông và hạ có kiểm soát.','Không xoay thân để giật tạ.'],
+['Lưng','Chest-supported row','Lưng giữa; xô; vai sau','3 × 8–12','24–36 lần','90 giây','Tựa ngực lên ghế nghiêng, kéo tạ về phía thân rồi hạ chậm.','Giữ cổ ở vị trí tự nhiên.'],
+['Lưng','Inverted row','Lưng giữa; xô; tay trước','3 × 6–12','18–36 lần','90–120 giây','Nằm dưới thanh cố định, kéo ngực lên thanh, giữ thân thẳng.','Chỉ dùng thanh được cố định an toàn.'],
+['Lưng','Straight-arm pulldown','Xô; cơ lõi','3 × 10–15','30–45 lần','60–90 giây','Tay gần thẳng, kéo dây từ ngang vai xuống đùi bằng cơ xô.','Không ưỡn lưng để tạo đà.'],
+['Lưng','Face pull','Vai sau; lưng trên; chóp xoay','3 × 12–15','36–45 lần','60–90 giây','Kéo dây về phía mặt, khuỷu mở ngang, siết bả vai.','Dùng lực nhẹ và chuyển động có kiểm soát.'],
+['Lưng','Prone W raise','Lưng trên; vai sau','2–3 × 10–15','20–45 lần','45–75 giây','Nằm sấp, tạo hình chữ W bằng khuỷu, nâng nhẹ tay và siết bả vai.','Không ngửa cổ.'],
+['Lưng','Back extension','Lưng dưới; mông; đùi sau','2–3 × 10–15','20–45 lần','60–90 giây','Gập và duỗi hông có kiểm soát, giữ cột sống trung tính.','Không ngửa quá mức ở điểm cao.'],
+['Lưng','Dumbbell pullover','Xô; ngực','2–3 × 10–12','20–36 lần','60–90 giây','Nằm ghế, giữ tạ bằng hai tay, đưa tạ ra sau đầu trong biên độ thoải mái rồi kéo về.','Không hạ quá sâu hoặc dùng tạ nặng.'],
+// VAI
+['Vai','Overhead shoulder press','Vai trước/giữa; tay sau','3 × 6–10','18–30 lần','2 phút','Đẩy tạ từ ngang vai lên trên đầu, siết bụng và hạ chậm.','Không ưỡn lưng quá mức.'],
+['Vai','Dumbbell shoulder press','Vai; tay sau','3 × 8–12','24–36 lần','90–120 giây','Ngồi hoặc đứng vững, đẩy tạ lên cao rồi hạ về ngang vai.','Chọn biên độ không gây đau.'],
+['Vai','Arnold press','Vai trước/giữa; tay sau','3 × 8–12','24–36 lần','90 giây','Bắt đầu tạ trước ngực, xoay lòng bàn tay khi đẩy lên rồi đảo chiều khi hạ.','Dùng tạ nhẹ để làm quen chuyển động.'],
+['Vai','Lateral raise','Vai giữa','3 × 12–15','36–45 lần','45–75 giây','Nâng tạ sang hai bên đến gần ngang vai, khuỷu hơi cong, hạ chậm.','Không nhún người vung tạ.'],
+['Vai','Front raise','Vai trước','2–3 × 10–15','20–45 lần','60 giây','Nâng tạ trước thân đến ngang vai rồi hạ chậm.','Tránh ngả người lấy đà.'],
+['Vai','Reverse dumbbell fly','Vai sau; lưng trên','3 × 10–15','30–45 lần','60–90 giây','Gập hông, mở hai tay sang bên và siết phần lưng trên.','Giữ lưng trung tính, tạ nhẹ.'],
+['Vai','Pike push-up','Vai; tay sau','2–3 × 5–10','10–30 lần','90–120 giây','Nâng hông tạo chữ V ngược, hạ đầu giữa hai tay rồi đẩy lên.','Có thể giảm độ sâu hoặc kê tay cao.'],
+['Vai','Cable face pull','Vai sau; lưng trên','3 × 12–15','36–45 lần','60 giây','Kéo dây về ngang mặt, khuỷu mở và bả vai chuyển động tự nhiên.','Không kéo bằng giật thân.'],
+['Vai','Shrug (nhún vai)','Cơ thang trên','3 × 10–15','30–45 lần','60–90 giây','Cầm tạ hai bên, nâng vai lên rồi hạ chậm.','Không xoay vai thành vòng tròn.'],
+// TAY TRƯỚC
+['Tay trước','Dumbbell biceps curl','Tay trước','3 × 8–12','24–36 lần','60–90 giây','Khuỷu sát thân, cuốn tạ lên rồi hạ chậm.','Không đung đưa thân.'],
+['Tay trước','Hammer curl','Tay trước; cẳng tay','3 × 8–12','24–36 lần','60–90 giây','Giữ lòng bàn tay hướng vào nhau, cuốn tạ lên có kiểm soát.','Giữ cổ tay thẳng.'],
+['Tay trước','Barbell curl','Tay trước','3 × 6–12','18–36 lần','60–90 giây','Cầm thanh dưới tay, cuốn lên mà khuỷu không trôi nhiều về trước.','Không ngả lưng lấy đà.'],
+['Tay trước','Concentration curl','Tay trước','2–3 × 10–12 mỗi bên','20–36 lần','60 giây','Ngồi, tì khuỷu vào mặt trong đùi và cuốn tạ từng bên.','Hạ tạ chậm, không xoay cổ tay quá mức.'],
+['Tay trước','Incline dumbbell curl','Tay trước','3 × 8–12','24–36 lần','60–90 giây','Ngồi ghế nghiêng, tay buông tự nhiên rồi cuốn tạ lên.','Không kéo vai ra trước.'],
+['Tay trước','Cable curl','Tay trước','3 × 10–15','30–45 lần','60 giây','Giữ khuỷu sát thân, kéo tay cầm lên và trả chậm.','Giữ thân ổn định.'],
+['Tay trước','Reverse curl','Cánh tay quay; tay trước','2–3 × 10–15','20–45 lần','60 giây','Cầm thanh úp tay, cuốn lên với cổ tay thẳng.','Dùng tải nhẹ hơn curl thường.'],
+// TAY SAU
+['Tay sau','Triceps pushdown','Tay sau','3 × 10–15','30–45 lần','60–90 giây','Giữ khuỷu sát thân, duỗi cẳng tay xuống rồi trở về chậm.','Không để vai và khuỷu lắc nhiều.'],
+['Tay sau','Overhead triceps extension','Tay sau','3 × 8–12','24–36 lần','60–90 giây','Giữ tạ trên đầu, gập khuỷu hạ tạ sau đầu rồi duỗi lên.','Không ưỡn lưng; chọn tạ vừa sức.'],
+['Tay sau','Close-grip push-up','Tay sau; ngực','3 × 5–12','15–36 lần','60–120 giây','Tay gần nhau hơn vai, khuỷu hướng về sau, hạ người rồi đẩy lên.','Chống tay cao nếu quá khó.'],
+['Tay sau','Bench dip','Tay sau; vai','2 × 6–10','12–20 lần','90 giây','Tay đặt trên ghế cố định, hạ thân nhẹ bằng cách gập khuỷu rồi đẩy lên.','Nếu vai khó chịu, thay bằng pushdown hoặc chống đẩy tay hẹp.'],
+['Tay sau','Lying triceps extension','Tay sau','3 × 8–12','24–36 lần','60–90 giây','Nằm ghế, gập khuỷu đưa tạ về gần trán rồi duỗi lên.','Giữ khuỷu ổn định và dùng tải kiểm soát được.'],
+['Tay sau','Triceps kickback','Tay sau','2–3 × 10–15','20–45 lần','60 giây','Gập hông, giữ khuỷu cao sát thân và duỗi cẳng tay ra sau.','Không vung cả cánh tay.'],
+// CẲNG TAY
+['Cẳng tay','Wrist curl','Cẳng tay; cơ gấp cổ tay','2–3 × 12–20','24–60 lần','45–60 giây','Tựa cẳng tay, lòng bàn tay hướng lên, gập cổ tay nâng tạ rồi hạ chậm.','Dùng tạ nhẹ, không giật cổ tay.'],
+['Cẳng tay','Reverse wrist curl','Cẳng tay; cơ duỗi cổ tay','2–3 × 12–20','24–60 lần','45–60 giây','Tựa cẳng tay, lòng bàn tay hướng xuống, nâng mu bàn tay rồi hạ.','Biên độ vừa phải.'],
+['Cẳng tay','Farmer carry','Cẳng tay; vai; cơ lõi','3 lượt × 20–40 m','60–120 m','60–120 giây','Cầm hai vật nặng vừa sức, đứng thẳng và bước đều trong quãng ngắn.','Không nghiêng người; lối đi thông thoáng.'],
+// BỤNG & CORE
+['Bụng','Plank','Cơ lõi; bụng ngang','3 × 15–45 giây','45–135 giây','45–75 giây','Chống khuỷu dưới vai, siết bụng/mông và thở đều.','Dừng trước khi hông võng; có thể chống gối.'],
+['Bụng','Side plank','Cơ liên sườn; cơ lõi','2–3 × 15–30 giây mỗi bên','60–180 giây hai bên','45–75 giây','Chống một khuỷu, nâng hông và giữ thân thành đường thẳng.','Có thể co gối để dễ hơn.'],
+['Bụng','Dead bug','Cơ lõi sâu; bụng ngang','3 × 6–10 mỗi bên','36–60 lần hai bên','45–60 giây','Nằm ngửa, duỗi tay và chân đối diện trong khi giữ lưng dưới ổn định.','Rút ngắn biên độ nếu lưng bị nhấc.'],
+['Bụng','Crunch','Cơ bụng thẳng','3 × 10–20','30–60 lần','45–60 giây','Nằm ngửa co gối, nâng vai khỏi sàn bằng cơ bụng rồi hạ chậm.','Không kéo cổ bằng tay.'],
+['Bụng','Reverse crunch','Bụng dưới theo cách gọi thông dụng; cơ lõi','3 × 8–15','24–45 lần','45–60 giây','Co gối về phía ngực và cuộn nhẹ xương chậu lên, hạ từ từ.','Không vung chân lấy đà.'],
+['Bụng','Bicycle crunch','Bụng; cơ liên sườn','3 × 10–16 mỗi bên','60–96 lần hai bên','45–60 giây','Xoay thân đưa vai về phía gối đối diện, đổi bên chậm rãi.','Không kéo đầu; ưu tiên kiểm soát.'],
+['Bụng','Leg raise nằm','Cơ lõi; gập hông','3 × 8–12','24–36 lần','60 giây','Nằm ngửa, nâng chân rồi hạ chậm đến mức lưng dưới vẫn ổn định.','Co gối nếu lưng dưới bị căng.'],
+['Bụng','Hanging knee raise','Bụng; gập hông; cẳng tay','3 × 8–12','24–36 lần','60–90 giây','Treo trên xà chắc, nâng gối về phía ngực rồi hạ chậm.','Tránh đung đưa; chỉ dùng xà an toàn.'],
+['Bụng','Mountain climber','Cơ lõi; vai; tim mạch','3 × 20–40 giây','60–120 giây','45–60 giây','Tư thế chống đẩy, luân phiên đưa gối về trước trong khi giữ thân ổn định.','Chậm lại nếu hông lắc mạnh.'],
+['Bụng','Russian twist','Cơ liên sườn; cơ lõi','2–3 × 10–16 mỗi bên','40–96 lần hai bên','45–60 giây','Ngồi hơi ngả, xoay lồng ngực sang hai bên; có thể không dùng tạ.','Không xoay mạnh cột sống hoặc dùng tải nặng.'],
+['Bụng','Hollow body hold','Cơ lõi','3 × 10–30 giây','30–90 giây','45–60 giây','Nằm ngửa, ép lưng dưới xuống sàn và nâng vai/chân trong biên độ phù hợp.','Co gối để dễ hơn, không để lưng cong khỏi sàn.'],
+['Bụng','Bird dog','Cơ lõi; lưng ổn định','3 × 8–10 mỗi bên','48–60 lần hai bên','45–60 giây','Chống tay gối, duỗi tay và chân đối diện, giữ hông không xoay.','Không võng lưng.'],
+['Bụng','Pallof press','Cơ lõi chống xoay','3 × 8–12 mỗi bên','48–72 lần hai bên','45–60 giây','Đứng ngang điểm neo dây, đẩy tay ra trước và chống lại lực kéo xoay.','Điểm neo phải chắc chắn.'],
+// CHÂN - ĐÙI TRƯỚC
+['Đùi trước','Bodyweight squat','Đùi trước; mông; cơ lõi','3 × 10–15','30–45 lần','60–90 giây','Chân rộng bằng vai, đẩy hông ra sau, gối theo hướng mũi chân rồi đứng lên.','Có thể squat chạm ghế để học kỹ thuật.'],
+['Đùi trước','Goblet squat','Đùi trước; mông; cơ lõi','3 × 8–12','24–36 lần','90 giây','Ôm tạ trước ngực, squat có kiểm soát và giữ thân vững.','Giữ gót chân trên sàn.'],
+['Đùi trước','Barbell back squat','Đùi trước; mông; lưng ổn định','3 × 5–10','15–30 lần','2–3 phút','Đặt thanh ổn định trên lưng, ngồi xuống trong biên độ kiểm soát rồi đứng lên.','Học kỹ thuật với tải nhẹ; dùng chốt an toàn.'],
+['Đùi trước','Front squat','Đùi trước; cơ lõi; lưng trên','3 × 5–10','15–30 lần','2–3 phút','Giữ thanh trước vai, khuỷu hướng lên, squat rồi đứng lên.','Yêu cầu kỹ thuật; không cố khi cổ tay/vai đau.'],
+['Đùi trước','Leg press','Đùi trước; mông','3 × 8–12','24–36 lần','90–150 giây','Đặt chân trên bàn đạp, hạ có kiểm soát rồi đẩy lên không khóa gối mạnh.','Không để lưng dưới cuộn khỏi đệm.'],
+['Đùi trước','Leg extension','Đùi trước','3 × 10–15','30–45 lần','60–90 giây','Duỗi gối nâng đệm, giữ ngắn ở trên rồi hạ chậm.','Chọn tải không gây đau khớp gối.'],
+['Đùi trước','Step-up','Đùi trước; mông','3 × 8–12 mỗi bên','48–72 lần hai bên','60–90 giây','Bước lên bục chắc bằng một chân, đứng thẳng rồi bước xuống có kiểm soát.','Bục thấp và chống trượt.'],
+['Đùi trước','Walking lunge','Đùi trước; mông','2–3 × 8–12 mỗi bên','32–72 bước','90 giây','Bước dài vừa phải, hạ gối sau gần sàn và tiến bước tiếp theo.','Giữ thăng bằng, giảm biên độ khi cần.'],
+['Đùi trước','Bulgarian split squat','Đùi trước; mông','2–3 × 6–10 mỗi bên','24–60 lần hai bên','90–120 giây','Chân sau đặt lên ghế chắc, hạ thân thẳng đứng rồi đẩy lên bằng chân trước.','Bắt đầu không tạ và dùng điểm tựa nếu cần.'],
+// ĐÙI SAU & HÔNG
+['Đùi sau','Romanian deadlift','Đùi sau; mông; lưng ổn định','3 × 6–10','18–30 lần','2 phút','Đẩy hông ra sau, tạ đi sát chân, giữ lưng trung tính rồi duỗi hông đứng lên.','Không biến thành squat; dừng khi lưng không còn trung tính.'],
+['Đùi sau','Dumbbell deadlift','Đùi sau; mông; lưng','3 × 8–12','24–36 lần','90–150 giây','Tạ cạnh chân, gập hông/gối để nhấc tạ, đứng lên bằng cách duỗi hông.','Học kỹ thuật với tạ nhẹ.'],
+['Đùi sau','Leg curl machine','Đùi sau','3 × 10–15','30–45 lần','60–90 giây','Cuộn gót về phía mông, giữ hông ổn định rồi trả chậm.','Không giật tạ.'],
+['Đùi sau','Single-leg Romanian deadlift','Đùi sau; mông; thăng bằng','2–3 × 6–10 mỗi bên','24–60 lần hai bên','60–90 giây','Đứng một chân, đẩy hông ra sau và đưa chân kia về sau; trở lại đứng.','Vịn nhẹ vào điểm tựa nếu cần.'],
+['Đùi sau','Good morning','Đùi sau; mông; lưng dựng sống','2–3 × 8–12','16–36 lần','90 giây','Tay đặt trước ngực hoặc thanh nhẹ trên lưng, gập hông rồi đứng thẳng.','Không dùng tải nặng nếu chưa thành thạo hip hinge.'],
+// MÔNG & HÔNG
+['Mông','Glute bridge','Mông; đùi sau','3 × 10–15','30–45 lần','45–75 giây','Nằm ngửa co gối, siết mông nâng hông rồi hạ chậm.','Không ưỡn lưng quá mức.'],
+['Mông','Hip thrust','Mông; đùi sau','3 × 8–12','24–36 lần','90–120 giây','Tựa lưng trên ghế chắc, đẩy hông lên và siết mông ở đỉnh.','Đệm thanh tạ; ghế phải không trượt.'],
+['Mông','Single-leg glute bridge','Mông; cơ lõi','2–3 × 8–12 mỗi bên','32–72 lần hai bên','60 giây','Nằm ngửa, một chân đặt sàn, chân kia nâng; đẩy hông bằng chân trụ.','Giữ hai bên hông cân bằng.'],
+['Mông','Donkey kick','Mông','3 × 10–15 mỗi bên','60–90 lần hai bên','45–60 giây','Chống tay gối, đẩy gót chân lên sau mà không xoay hông.','Không võng lưng.'],
+['Mông','Fire hydrant','Mông giữa; cơ hông','2–3 × 10–15 mỗi bên','40–90 lần hai bên','45–60 giây','Chống tay gối, mở gối sang ngang mà giữ thân ổn định.','Không nghiêng người để tăng biên độ.'],
+['Mông','Cable glute kickback','Mông','3 × 10–15 mỗi bên','60–90 lần hai bên','60 giây','Đá chân ra sau từ khớp hông, giữ thân ổn định rồi trở về.','Không ưỡn lưng.'],
+['Mông','Clamshell','Mông giữa; cơ hông','2–3 × 12–20 mỗi bên','48–120 lần hai bên','45 giây','Nằm nghiêng, gối co và hai bàn chân chạm nhau; mở gối trên mà không xoay hông.','Có thể thêm dây kháng lực khi đã vững.'],
+['Mông','Lateral band walk','Mông giữa; hông','2–3 × 8–12 bước mỗi hướng','32–72 bước','45–60 giây','Đặt dây quanh đùi/cổ chân, hơi khuỵu gối và bước ngang có kiểm soát.','Giữ dây căng nhẹ, không kéo lê chân.'],
+// BẮP CHÂN
+['Bắp chân','Standing calf raise','Bắp chân','3 × 12–20','36–60 lần','45–60 giây','Đứng vững, nhón gót lên cao rồi hạ chậm qua biên độ thoải mái.','Vịn điểm tựa; không nảy bật.'],
+['Bắp chân','Seated calf raise','Cơ dép bắp chân','3 × 12–20','36–60 lần','45–60 giây','Ngồi, đặt tải trên đùi gần gối, nhón gót và hạ chậm.','Không đặt tải trực tiếp gây đau khớp.'],
+['Bắp chân','Single-leg calf raise','Bắp chân','2–3 × 8–15 mỗi bên','16–90 lần hai bên','45–60 giây','Nhón gót một chân, giữ thăng bằng rồi hạ chậm.','Vịn tường nếu cần.'],
+// TOÀN THÂN & CARDIO
+['Toàn thân','Burpee cơ bản','Toàn thân; tim mạch','2–3 × 5–10','10–30 lần','90 giây','Từ đứng xuống chống tay, bước chân ra sau, trở về rồi đứng lên; có thể bỏ bật nhảy.','Chọn biến thể ít tác động nếu mới tập.'],
+['Toàn thân','Jumping jack','Toàn thân; tim mạch','3 × 20–40 giây','60–120 giây','45 giây','Bật chân sang hai bên đồng thời đưa tay lên, trở về nhẹ nhàng.','Có thể bước từng chân thay vì nhảy.'],
+['Toàn thân','High knees','Toàn thân; tim mạch','3 × 20–30 giây','60–90 giây','45–60 giây','Chạy tại chỗ nâng gối vừa sức, thân thẳng và tiếp đất nhẹ.','Giảm tốc nếu khó chịu khớp.'],
+['Toàn thân','Bear crawl','Vai; cơ lõi; chân','3 × 10–20 m','30–60 m','60 giây','Chống tay chân, nhấc gối khỏi sàn và di chuyển chậm với hông ổn định.','Bắt đầu quãng ngắn.'],
+['Toàn thân','Kettlebell swing','Mông; đùi sau; cơ lõi','3 × 10–15','30–45 lần','90 giây','Đẩy hông ra sau rồi duỗi mạnh hông để đưa tạ vung đến ngang ngực.','Đây là động tác kỹ thuật; học với huấn luyện viên/tạ nhẹ trước.'],
+['Toàn thân','Battle rope waves','Vai; tay; tim mạch','4 × 15–30 giây','60–120 giây','60 giây','Giữ gối hơi chùng, luân phiên tạo sóng dây bằng tay.','Bắt đầu ngắn, tránh quá sức.'],
+['Toàn thân','Đi bộ nhanh','Tim mạch; chân','10–30 phút','10–30 phút','Tự chọn','Đi với nhịp nhanh vừa đủ để thở nhanh hơn nhưng vẫn nói được câu ngắn.','Tăng thời lượng từ từ.'],
+['Toàn thân','Đạp xe','Tim mạch; đùi; mông','10–30 phút','10–30 phút','Tự chọn','Điều chỉnh yên phù hợp, đạp đều ở mức sức phù hợp.','Dừng nếu đau hoặc chóng mặt.'],
+['Toàn thân','Nhảy dây cơ bản','Bắp chân; phối hợp; tim mạch','3 × 20–60 giây','60–180 giây','45–60 giây','Nhảy thấp, tiếp đất nhẹ bằng phần trước bàn chân và xoay dây bằng cổ tay.','Có thể thay bằng bước tại chỗ nếu cần giảm tác động.'],
+['Toàn thân','Step jack ít tác động','Tim mạch; chân; vai','3 × 30–60 giây','90–180 giây','45 giây','Bước một chân sang bên luân phiên và đưa tay lên thay vì bật nhảy.','Giữ nhịp thở ổn định.'],
+// CỔ, TƯ THẾ & VẬN ĐỘNG BỔ TRỢ
+['Lưng','Band pull-apart','Lưng trên; vai sau','2–3 × 12–20','24–60 lần','45–60 giây','Giữ dây trước ngực, kéo hai tay sang hai bên và siết bả vai.','Không nhún vai lên tai.'],
+['Cơ lõi','Pallof hold','Cơ lõi chống xoay','3 × 15–30 giây mỗi bên','90–180 giây','45–60 giây','Đứng ngang dây neo, giữ tay duỗi trước ngực và chống lại lực xoay.','Neo dây chắc chắn.'],
+['Chân & mông','Reverse lunge','Đùi trước; mông; thăng bằng','3 × 6–10 mỗi bên','36–60 lần hai bên','60–90 giây','Bước chân ra sau, hạ thân có kiểm soát rồi đẩy chân trước để đứng lên.','Có thể vịn điểm tựa chắc.'],
+['Chân & mông','Wall sit','Đùi trước; cơ lõi','3 × 20–45 giây','60–135 giây','60 giây','Tựa lưng vào tường, trượt xuống mức gối thoải mái và giữ tư thế.','Không cần ép đùi song song sàn nếu khó chịu.'],
+['Chân & mông','Sumo squat','Đùi; mông; cơ khép đùi','3 × 8–15','24–45 lần','60–90 giây','Đứng rộng hơn vai, mũi chân hơi hướng ra ngoài, squat và đứng lên.','Gối đi cùng hướng mũi chân.'],
+['Chân & mông','Lateral lunge','Đùi; mông; cơ khép đùi','2–3 × 6–10 mỗi bên','24–60 lần hai bên','60–90 giây','Bước ngang, đẩy hông về sau bên chân trụ, chân kia duỗi rồi trở về.','Bắt đầu biên độ nhỏ.'],
+['Lưng','Superman hold','Lưng dựng sống; mông','2–3 × 10–20 giây','20–60 giây','45–60 giây','Nằm sấp, nâng nhẹ tay và chân khỏi sàn, giữ cổ trung tính rồi hạ.','Không cố nâng quá cao hoặc gây đau lưng.'],
+['Bụng','Heel touches','Cơ liên sườn; bụng','3 × 12–20 mỗi bên','72–120 lần hai bên','45 giây','Nằm ngửa co gối, nâng nhẹ vai và với tay lần lượt về phía gót chân.','Không kéo cổ.'],
+['Bụng','Sit-up có kiểm soát','Bụng; gập hông','2–3 × 8–15','16–45 lần','60 giây','Nằm ngửa, co gối, nâng thân lên trong biên độ kiểm soát rồi hạ chậm.','Dùng crunch nếu sit-up gây khó chịu lưng.'],
+['Ngực','Knee push-up','Ngực; tay sau; vai trước','3 × 6–15','18–45 lần','60–90 giây','Chống tay và gối, giữ đường thẳng từ đầu đến gối, hạ ngực rồi đẩy lên.','Không võng hông.'],
+['Lưng','Dumbbell shrug','Cơ thang trên','3 × 10–15','30–45 lần','60 giây','Cầm tạ hai bên, nâng vai thẳng lên, giữ ngắn rồi hạ xuống.','Không xoay vai.'],
+['Tay trước','Zottman curl','Tay trước; cẳng tay','2–3 × 8–12','16–36 lần','60–90 giây','Cuốn tạ lòng bàn tay hướng lên, xoay ở đỉnh để hạ với lòng bàn tay hướng xuống.','Dùng tạ nhẹ, xoay cổ tay có kiểm soát.'],
+['Ngực','Machine chest press','Ngực; tay sau; vai trước','3 × 8–12','24–36 lần','90 giây','Điều chỉnh ghế để tay cầm ngang giữa ngực, đẩy ra rồi trả chậm.','Không khóa khuỷu mạnh.'],
+['Lưng','Machine row','Lưng giữa; xô; tay trước','3 × 8–12','24–36 lần','90 giây','Ngồi vững, kéo tay cầm về thân và trở lại chậm.','Không nhún người để kéo.'],
+['Vai','Machine lateral raise','Vai giữa','3 × 10–15','30–45 lần','60 giây','Tựa người vào máy, nâng cánh tay sang bên đến biên độ thoải mái.','Không nâng cao gây đau.'],
+['Đùi sau','Glute-ham raise (hỗ trợ)','Đùi sau; mông','2–3 × 5–8','10–24 lần','90–120 giây','Giữ thân thẳng, hạ người từ gối chậm rồi dùng đùi sau kéo về.','Bài khó; chỉ làm với thiết bị phù hợp và hỗ trợ.'],
+['Mông','Hip abduction machine','Mông giữa; cơ dạng hông','3 × 12–20','36–60 lần','60 giây','Ngồi vững, đẩy hai gối ra ngoài rồi trở về chậm.','Không nảy hoặc dùng tải quá nặng.'],
+['Chân & mông','Leg curl với bóng','Đùi sau; mông; cơ lõi','2–3 × 8–12','16–36 lần','60–90 giây','Nằm ngửa, gót đặt lên bóng, nâng hông và cuộn bóng về phía người.','Bắt đầu với biên độ ngắn để giữ thăng bằng.'],
+['Toàn thân','Bear plank shoulder tap','Cơ lõi; vai','2–3 × 8–12 mỗi bên','32–72 lần hai bên','45–60 giây','Ở tư thế bear plank, nhấc một tay chạm vai đối diện, luân phiên và giữ hông yên.','Mở rộng chân để dễ giữ thăng bằng.'],
+['Toàn thân','Squat to chair','Đùi trước; mông','3 × 8–15','24–45 lần','60–90 giây','Ngồi hông về ghế chắc rồi đứng lên, không thả rơi người.','Chọn chiều cao ghế phù hợp.'],
+['Bụng','Standing knee-to-elbow','Cơ lõi; cơ liên sườn','2–3 × 10–15 mỗi bên','40–90 lần hai bên','45 giây','Đứng thẳng, đưa gối lên gần khuỷu đối diện, đổi bên có kiểm soát.','Không giật cổ hoặc lưng.'],
+['Toàn thân','March tại chỗ','Tim mạch; hông; chân','3 × 1–3 phút','3–9 phút','30–60 giây','Bước tại chỗ, đánh tay tự nhiên và giữ nhịp thở đều.','Tăng thời lượng dần.']
+].map(a=>({cat:a[0],name:a[1],muscle:a[2],reps:a[3],volume:a[4],rest:a[5],how:a[6],tip:a[7]}));
+const categories=['Tất cả',...new Set(library.map(x=>x.cat))];let activeCat='Tất cả';
+const DAILY_PLAN_KEY='fitplanDailyPlanV1';
+function readDailyPlan(){try{return JSON.parse(localStorage.getItem(DAILY_PLAN_KEY)||'[]')}catch(e){return []}}
+function saveDailyPlan(plan){try{localStorage.setItem(DAILY_PLAN_KEY,JSON.stringify(plan));persistAccountSnapshot()}catch(e){if($('dailyPlanStatus'))$('dailyPlanStatus').textContent='Không thể lưu dữ liệu trên trình duyệt này.'}}
+function initDailyPlanFromSchedule(){
+ const cards=[...document.querySelectorAll('#schedule .workoutCard')];
+ const existing=readDailyPlan();
+ const plan=cards.map((card,index)=>{const id=card.dataset.workoutId;const old=existing.find(d=>d.id===id);const isRest=card.classList.contains('restCard');const tasks=isRest?[]:[...card.querySelectorAll('.exercise')].map((el,i)=>({id:'task-'+id+'-'+i,name:el.querySelector('strong')?.textContent?.trim()||('Bài tập '+(i+1)),detail:el.querySelector('small')?.textContent?.trim()||'',done:false}));
+ if(old&&old.tasks&&!isRest){tasks.forEach(t=>{const match=old.tasks.find(o=>o.name===t.name);if(match)t.done=!!match.done});return {...old,id,title:card.querySelector('h3')?.textContent?.trim()||id,tasks,isRest:false};}
+ return {id,title:card.querySelector('h3')?.textContent?.trim()||id,tasks,isRest,open:false};});
+ saveDailyPlan(plan);renderDailyPlan();$('dailyPlanNav').classList.remove('hidden');
+}
+function renderDailyPlan(){
+ const root=$('dailyPlanList');if(!root)return;const plan=readDailyPlan();
+ if(!plan.length){root.innerHTML='<div class="day"><p>Bạn chưa tạo lịch tập. Hãy vào Menu và trả lời câu hỏi để tạo lịch trước nhé.</p><button type="button" class="primary" id="makePlanFromDaily">Tạo lịch tập</button></div>';root.querySelector('#makePlanFromDaily').onclick=()=>showPage('menu');$('dailyPlanSummary').textContent='Chưa có lịch';return;}
+ $('dailyPlanNav').classList.remove('hidden');
+ root.innerHTML=plan.map(day=>{if(day.isRest)return '<article class="dailyPlanDay restDay"><div class="resultHead"><div><h3>'+escapeHtml(day.title)+'</h3><small>Ngày nghỉ / hồi phục</small></div><span class="pill">Nghỉ</span></div><p class="muted">Có thể đi bộ nhẹ, giãn cơ hoặc nghỉ hoàn toàn. Ngày nghỉ không cộng điểm tập.</p></article>';
+ const total=day.tasks.length,done=day.tasks.filter(t=>t.done).length,complete=total>0&&done===total;const options=library.map(x=>'<option value="'+escapeHtml(x.name)+'">'+escapeHtml(x.name)+' · '+escapeHtml(x.cat)+'</option>').join('');return '<article class="dailyPlanDay" data-daily-day="'+escapeHtml(day.id)+'"><label class="dayToggle"><input type="checkbox" data-open-day="'+escapeHtml(day.id)+'" '+(day.open?'checked':'')+'><span><strong>'+escapeHtml(day.title)+'</strong><small>'+done+' / '+total+' bài đã tích · '+(complete?'✓ Hoàn thành +1 ngày':'Chạm để xem checklist')+'</small></span></label><div class="dayProgress"><span style="width:'+(total?done/total*100:0)+'%"></span></div><div class="dayTaskContent '+(day.open?'':'hidden')+'">'+(day.tasks.length?day.tasks.map(t=>'<label class="taskRow"><input type="checkbox" data-task-id="'+escapeHtml(t.id)+'" '+(t.done?'checked':'')+'><span class="taskInfo"><strong>'+escapeHtml(t.name)+'</strong><small>'+escapeHtml(t.detail)+'</small></span><button type="button" class="removeTask secondary" data-remove="'+escapeHtml(t.id)+'" aria-label="Xóa bài '+escapeHtml(t.name)+'" style="padding:5px 8px">×</button></label>').join(''):'<p class="muted">Chưa có bài tập. Hãy thêm từ kho.</p>')+'<div class="dayTools"><select class="addExerciseSelect" aria-label="Chọn bài tập để thêm"><option value="">＋ Chọn bài từ Kho bài tập…</option>'+options+'</select><button type="button" class="secondary addExerciseBtn">Thêm bài</button></div></div></article>';}).join('');
+ const active=plan.filter(d=>!d.isRest);const doneCount=active.filter(d=>d.tasks.length>0&&d.tasks.every(t=>t.done)).length;$('dailyPlanSummary').textContent=doneCount+' / '+active.length+' ngày tập hoàn thành';$('overallDailyProgress').textContent=doneCount+' / '+active.length+' ngày tập hoàn thành';$('dailyOverallBar').style.width=(active.length?doneCount/active.length*100:0)+'%';
+ root.querySelectorAll('[data-daily-day]').forEach(card=>{const dayId=card.dataset.dailyDay;card.querySelector('[data-open-day]')?.addEventListener('change',ch=>{const p=readDailyPlan(),d=p.find(x=>x.id===dayId);if(d)d.open=ch.target.checked;saveDailyPlan(p);renderDailyPlan();});card.querySelectorAll('input[type=checkbox][data-task-id]').forEach(ch=>ch.addEventListener('change',()=>{const p=readDailyPlan(),d=p.find(x=>x.id===dayId),t=d?.tasks.find(x=>x.id===ch.dataset.taskId);if(t)t.done=ch.checked;saveDailyPlan(p);syncPlanDayProgress(p);renderDailyPlan();}));card.querySelectorAll('[data-remove]').forEach(btn=>btn.addEventListener('click',()=>{const p=readDailyPlan(),d=p.find(x=>x.id===dayId);if(d)d.tasks=d.tasks.filter(t=>t.id!==btn.dataset.remove);saveDailyPlan(p);syncPlanDayProgress(p);renderDailyPlan();}));card.querySelector('.addExerciseBtn')?.addEventListener('click',()=>{const select=card.querySelector('.addExerciseSelect'),name=select.value;if(!name){$('dailyPlanStatus').textContent='Hãy chọn một bài tập trong danh sách trước.';return;}const x=library.find(e=>e.name===name);if(!x)return;const p=readDailyPlan(),d=p.find(v=>v.id===dayId);if(d){d.open=true;d.tasks.push({id:'custom-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:x.name,detail:x.cat+' · '+x.reps+' · Nghỉ '+x.rest,done:false});saveDailyPlan(p);$('dailyPlanStatus').textContent='Đã thêm “'+x.name+'” vào '+d.title+'.';syncPlanDayProgress(p);renderDailyPlan();}});});
+}
+function syncPlanDayProgress(plan){const log=readWorkoutLog();plan.forEach(d=>{const key='PlanChecklist|'+d.id;if(!d.isRest&&d.tasks.length&&d.tasks.every(t=>t.done)){if(!log[key])log[key]=localDayKey();}else delete log[key];});writeWorkoutLog(log);renderProgressStats();}
+document.addEventListener('click',e=>{if(e.target.closest('#openDailyPlan')){showPage('workouts');history.replaceState(null,'','#dailyPlan');}});
+$('backToMenu')?.addEventListener('click',()=>showPage('menu'));
+$('goExerciseLibrary')?.addEventListener('click',()=>showPage('library'));
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function webImageLink(name){return 'https://www.google.com/search?tbm=isch&q='+encodeURIComponent(name+' exercise proper form');}
+function renderLibrary(){const filters=$('libraryFilters');filters.innerHTML=categories.map(c=>'<button type="button" class="filterBtn '+(c===activeCat?'active':'')+'" data-cat="'+escapeHtml(c)+'">'+escapeHtml(c)+'</button>').join('');filters.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{activeCat=b.dataset.cat;renderLibrary()}));const items=library.filter(x=>activeCat==='Tất cả'||x.cat===activeCat);$('libraryList').innerHTML='<p class="muted">Đang hiển thị '+items.length+' bài · Tổng thư viện: '+library.length+' bài. Chọn bài để xem hướng dẫn; mục ảnh mở kết quả ảnh từ web, không dùng hình tự vẽ.</p>'+items.map(x=>'<button type="button" class="libraryItem" data-name="'+escapeHtml(x.name)+'"><strong>'+escapeHtml(x.name)+'</strong><small>'+escapeHtml(x.cat)+' · '+escapeHtml(x.muscle)+'</small><small>'+escapeHtml(x.reps)+'</small></button>').join('');$('libraryList').querySelectorAll('button[data-name]').forEach(b=>b.addEventListener('click',()=>showExercise(b.dataset.name)));}
+function showExercise(name){const x=library.find(e=>e.name===name);if(!x)return;const d=$('exerciseDetail');d.classList.remove('hidden');d.innerHTML='<h3>'+escapeHtml(x.name)+'</h3><p><strong>Nhóm cơ:</strong> '+escapeHtml(x.cat)+' — '+escapeHtml(x.muscle)+'</p><p><strong>Cách thực hiện:</strong> '+escapeHtml(x.how)+'</p><div class="detailStats"><div><span>Số rep / thời lượng</span><strong>'+escapeHtml(x.reps)+'</strong></div><div><span>Volume tham khảo</span><strong>'+escapeHtml(x.volume)+'</strong></div><div><span>Thời gian nghỉ</span><strong>'+escapeHtml(x.rest)+'</strong></div></div><p class="hint">Lưu ý: '+escapeHtml(x.tip)+'</p><p><a href="'+webImageLink(x.name)+'" target="_blank" rel="noopener noreferrer">Xem ảnh minh họa thật từ web ↗</a></p><button type="button" class="secondary" id="closeDetail">Đóng chi tiết</button>';d.querySelector('#closeDetail').addEventListener('click',()=>d.classList.add('hidden'));d.scrollIntoView({behavior:'smooth',block:'nearest'});}
+renderLibrary();
+// Hành trình: ngày kiên trì tính theo ngày lịch từ ngày bắt đầu, lưu cục bộ.
+const journeyKeys=['journeyStart','journeyWeight','weeklyMinutes','journeyDays'];function loadJourney(){try{const v=JSON.parse(localStorage.getItem('fitplanJourney')||'{}');journeyKeys.forEach(k=>{if(v[k]!==undefined&&$(k))$(k).value=v[k]});}catch(e){} if(!$('journeyStart').value)$('journeyStart').value=new Date().toISOString().slice(0,10);updateJourney();}
+function updateJourney(){const start=$('journeyStart').value;let days=0;if(start){const d=new Date(start+'T00:00:00');days=Math.max(0,Math.floor((new Date(new Date().toDateString())-d)/86400000)+1)}$('streakValue').textContent=days+' ngày';const mins=Math.max(0,+$('weeklyMinutes').value||0);const wm=$('weeklyMinutesStat');if(wm)wm.textContent=mins;const prog=$('weeklyProgress');if(prog)prog.style.width=Math.min(100,mins/150*100)+'%';const pt=$('weeklyProgressText');if(pt)pt.textContent=mins+' / 150 phút ('+Math.round(Math.min(100,mins/150*100))+'%)';const kg=Math.max(15,+$('journeyWeight').value||65);const kcal=Math.round(mins*4.5);$('calorieEstimate').textContent=kcal.toLocaleString('vi-VN')+' kcal';$('weightEstimate').textContent='Dựa trên thời gian vận động đã nhập, năng lượng tiêu hao ước tính khoảng '+kcal.toLocaleString('vi-VN')+' kcal/tuần. Không quy đổi thành kg giảm cân vì sai số lớn và thay đổi cân nặng không chỉ do mỡ.';}
+$('saveJourney').addEventListener('click',()=>{const v={};journeyKeys.forEach(k=>v[k]=$(k).value);try{localStorage.setItem('fitplanJourney',JSON.stringify(v));persistAccountSnapshot();$('journeyStatus').textContent='Đã lưu trên trình duyệt của thiết bị này.';}catch(e){$('journeyStatus').textContent='Trình duyệt không cho phép lưu dữ liệu; hãy giữ trang trên thiết bị này.'}updateJourney();renderProgressStats()});journeyKeys.forEach(k=>$(k).addEventListener('input',updateJourney));loadJourney();renderProgressStats();
+// Tài khoản cục bộ: lưu trong trình duyệt hiện tại, không gửi mật khẩu ra mạng và không đồng bộ giữa thiết bị.
+const ACCOUNTS_KEY='fitplanLocalAccountsV1',SESSION_KEY='fitplanLocalSessionV1',ACCOUNT_DATA_KEY='fitplanAccountDataV1';
+const USER_DATA_KEYS=['fitplanPlan','fitplanDailyPlanV1','fitplanJourney','fitplanCompletedWorkouts','fitplanChecks'];
+function persistAccountSnapshot(){try{const user=localStorage.getItem(SESSION_KEY);if(!user)return;const all=JSON.parse(localStorage.getItem(ACCOUNT_DATA_KEY)||'{}'),data={};USER_DATA_KEYS.forEach(k=>data[k]=localStorage.getItem(k));all[user]=data;localStorage.setItem(ACCOUNT_DATA_KEY,JSON.stringify(all));}catch(e){}}
+function restoreAccountSnapshot(user){try{const all=JSON.parse(localStorage.getItem(ACCOUNT_DATA_KEY)||'{}'),data=all[user];if(!data)return;USER_DATA_KEYS.forEach(k=>{if(data[k]===null||data[k]===undefined)localStorage.removeItem(k);else localStorage.setItem(k,data[k]);});}catch(e){}}
+function readAccounts(){try{return JSON.parse(localStorage.getItem(ACCOUNTS_KEY)||'{}')}catch(e){return {}}}
+async function hashPassword(v){if(window.crypto?.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}return 'local-'+btoa(unescape(encodeURIComponent(v)));}
+function paintAccount(){const session=localStorage.getItem(SESSION_KEY);$('accountStatus').textContent=session?'Đã đăng nhập: '+session+' · Dữ liệu lưu trên trình duyệt này.':'Chưa đăng nhập. Dữ liệu hiện tại vẫn lưu trên thiết bị.';$('logoutAccount').classList.toggle('hidden',!session);}
+$('registerAccount')?.addEventListener('click',async()=>{const name=$('accountEmail').value.trim().toLowerCase(),pass=$('accountPassword').value;if(!name||pass.length<6){$('accountStatus').textContent='Nhập tên đăng nhập/email và mật khẩu từ 6 ký tự trở lên.';return;}const a=readAccounts();if(a[name]){$('accountStatus').textContent='Tên đăng nhập này đã được đăng ký trên trình duyệt.';return;}a[name]={passwordHash:await hashPassword(pass),createdAt:new Date().toISOString()};localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(a));localStorage.setItem(SESSION_KEY,name);persistAccountSnapshot();$('accountStatus').textContent='Đăng ký thành công trên thiết bị này. Dữ liệu FitPlan được giữ trong trình duyệt.';paintAccount();});
+$('loginAccount')?.addEventListener('click',async()=>{const name=$('accountEmail').value.trim().toLowerCase(),pass=$('accountPassword').value,a=readAccounts();if(!a[name]||a[name].passwordHash!==await hashPassword(pass)){$('accountStatus').textContent='Không đúng tên đăng nhập hoặc mật khẩu, hoặc tài khoản chưa đăng ký trên trình duyệt này.';return;}persistAccountSnapshot();localStorage.setItem(SESSION_KEY,name);restoreAccountSnapshot(name);restorePlanSnapshot();loadJourney();if(readDailyPlan().length)renderDailyPlan();renderProgressStats();$('accountStatus').textContent='Đăng nhập thành công. Đã mở dữ liệu của tài khoản trên trình duyệt này.';paintAccount();});
+$('logoutAccount')?.addEventListener('click',()=>{persistAccountSnapshot();localStorage.removeItem(SESSION_KEY);paintAccount();});paintAccount();
+let installPromptEvent=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPromptEvent=e;});
+$('installShortcut')?.addEventListener('click',async()=>{if(installPromptEvent){installPromptEvent.prompt();const choice=await installPromptEvent.userChoice;$('installStatus').textContent=choice?.outcome==='accepted'?'Đã chấp nhận cài đặt FitPlan.':'Bạn có thể cài đặt sau từ menu trình duyệt.';installPromptEvent=null;return;}if(window.matchMedia?.('(display-mode: standalone)').matches){$('installStatus').textContent='FitPlan đã mở ở chế độ ứng dụng.';return;}$('installStatus').textContent='Để tạo lối tắt: mở menu ⋮ của trình duyệt → “Thêm vào màn hình chính” hoặc “Cài đặt ứng dụng”. Với file HTML mở trực tiếp, một số trình duyệt không hỗ trợ cài đặt tự động; cần mở từ website HTTPS để có nút cài đặt đầy đủ.';});
+
+const plateauAdvice={nottracking:'Cân nặng có thể dao động theo nước, muối, tiêu hóa và thời điểm cân. Nếu muốn theo dõi, cân trong điều kiện tương tự và nhìn xu hướng vài tuần; không cần phản ứng với một lần cân.',short:'Vài ngày hoặc dưới 2 tuần chưa đủ để kết luận chững cân. Tiếp tục thói quen đều đặn, ăn đủ, ngủ đủ và theo dõi sức khỏe thay vì cắt ăn thêm.',long:'Nếu bạn là người trưởng thành và cân nặng không đổi khoảng 3–4 tuần, hãy xem lại tính đều đặn của vận động, giấc ngủ, thuốc men và sức khỏe; có thể trao đổi với chuyên gia y tế/dinh dưỡng. Đừng áp dụng hạn chế ăn cực đoan.',training:'Cân nặng đứng yên trong khi sức mạnh và thể lực tăng vẫn có thể là tiến bộ. Theo dõi thêm sức bền, kỹ thuật, năng lượng và cách quần áo vừa; không cần chỉ dựa vào cân.',tired:'Mệt mỏi, đói nhiều, ngủ kém hoặc hiệu suất giảm có thể là dấu hiệu hồi phục chưa đủ. Giảm cường độ, ăn đủ bữa, ngủ và nghỉ ngơi; nếu kéo dài hoặc có triệu chứng đáng lo, trao đổi với người lớn tin cậy/chuyên gia y tế.'};document.querySelectorAll('input[name="plateau"]').forEach(r=>r.addEventListener('change',()=>{const d=$('plateauAdvice');d.textContent=plateauAdvice[r.value];d.classList.remove('hidden')}));
+
+$('planner').addEventListener('submit',makePlan);$('planner').addEventListener('change',savePlanSnapshot);$('planner').addEventListener('input',savePlanSnapshot);
+$('reset').addEventListener('click',()=>{$('planner').reset();$('results').classList.add('hidden');try{const p=JSON.parse(localStorage.getItem('fitplanPlan')||'{}');p.visible=false;p.html='';localStorage.setItem('fitplanPlan',JSON.stringify(p));localStorage.removeItem(DAILY_PLAN_KEY);$('dailyPlanNav').classList.add('hidden');$('dailyPlanList').innerHTML='';}catch(e){}renderProgressStats();window.scrollTo({top:0,behavior:'smooth'});});
+// Điều hướng Menu, Kho bài tập, Hành trình và trang checklist lịch tập sau khi tạo kế hoạch.
+function showPage(page){document.querySelectorAll('.page-content').forEach(el=>{el.classList.remove('page-active');if(el.classList.contains('page-'+page))el.classList.add('page-active')});document.querySelectorAll('.topnav a[data-page]').forEach(a=>{const on=a.dataset.page===page;a.classList.toggle('active',on);if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('.topnav a[data-page]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();showPage(a.dataset.page);history.replaceState(null,'',a.getAttribute('href'));}));
+restorePlanSnapshot();if(readDailyPlan().length){$('dailyPlanNav').classList.remove('hidden');renderDailyPlan();}showPage('menu');
+</script>
+</body>
+</html>
